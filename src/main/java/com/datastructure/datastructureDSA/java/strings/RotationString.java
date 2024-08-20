@@ -18,6 +18,7 @@ public class RotationString {
             System.out.println("Sorry, they are not rotation of another");
         }
 
+        //adding new line
         scanner.close();
         
 
