@@ -1,10 +1,16 @@
 package com.datastructure.datastructureDSA.java.strings;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Locale;
 
+/**
+ * This program checks whether two strings are anagrams of each other.
+ */
 public class Anagram {
+    /**
+     * The main method of the program.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
 
         String str1 = "Race";
