@@ -1,0 +1,211 @@
+1. What is a Singleton Pattern?
+Ans: 	The Singleton Pattern ensures that a class has only one instance and provides a global point of access to it.
+	It is often used for logging, database connections, or configuration classes.
+
+	Implementation:=
+	public class Singleton {
+	    private static Singleton instance;
+	    private Singleton() {}
+	    public static synchronized Singleton getInstance() {
+	    if (instance == null) {
+	    instance = new Singleton();
+	    }
+	  return instance;
+	  }
+	}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. What is a Factory Pattern?
+   Answer: The Factory Pattern provides an interface for creating objects but allows subclasses to alter the type of objects that will be created.
+   It helps promote loose coupling.
+
+   Implementation:
+   public interface Shape {
+       void draw();
+   }
+
+   public class Circle implements Shape {
+       public void draw() { System.out.println("Drawing Circle"); }
+   }
+   public class ShapeFactory {
+       public static Shape getShape(String type) {
+           if (type.equalsIgnoreCase("CIRCLE")) {
+               return new Circle();
+           }
+           return null;
+       }
+   }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. What is the Builder Pattern?
+Answer: The Builder Pattern constructs complex objects step by step, allowing more control over the object creation process.
+It is often used for creating immutable object
+
+public class User {
+    private String name;
+    private int age;
+
+    private User(UserBuilder builder) {
+        this.name = builder.name;
+        this.age = builder.age;
+    }
+
+    public static class UserBuilder {
+        private String name;
+        private int age;
+
+        public UserBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. What is the Observer Pattern?
+Answer:
+The Observer Pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
+It is used in event handling systems.
+
+Implementation:
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class Subject {
+        private List<Observer> observers = new ArrayList<>();
+        public void addObserver(Observer o) { observers.add(o); }
+        public void notifyObservers() {
+            for (Observer o : observers) { o.update(); }
+        }
+    }
+
+    public interface Observer {
+        void update();
+    }
+    public class ConcreteObserver implements Observer {
+        public void update() { System.out.println("Notified!"); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. What is the Strategy Pattern?
+Answer:
+The Strategy Pattern defines a family of algorithms and makes them interchangeable by encapsulating them in classes. It is often used for implementing different behaviors dynamically.
+
+Implementation:
+    public interface PaymentStrategy {
+        void pay(int amount);
+    }
+    public class CreditCardPayment implements PaymentStrategy {
+        public void pay(int amount) { System.out.println("Paid " + amount + " using Credit Card."); }
+    }
+    public class PaymentContext {
+        private PaymentStrategy strategy;
+        public PaymentContext(PaymentStrategy strategy) { this.strategy = strategy; }
+        public void executePayment(int amount) { strategy.pay(amount); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. What is the Decorator Pattern?
+Answer:
+The Decorator Pattern allows behavior to be added to an object dynamically without modifying its structure. It is commonly used in I/O Streams.
+
+Implementation:
+    public interface Coffee {
+        String getDescription();
+        double getCost();
+    }
+    public class SimpleCoffee implements Coffee {
+        public String getDescription() { return "Simple Coffee"; }
+        public double getCost() { return 5.0; }
+    }
+    public class MilkDecorator implements Coffee {
+        private Coffee coffee;
+        public MilkDecorator(Coffee coffee) { this.coffee = coffee; }
+        public String getDescription() { return coffee.getDescription() + ", Milk"; }
+        public double getCost() { return coffee.getCost() + 1.5; }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. What is the Command Pattern?
+Answer:
+The Command Pattern encapsulates a request as an object, allowing parameterization and queuing of requests. It is often used in undo/redo functionality.
+
+Implementation:
+    public interface Command {
+        void execute();
+    }
+    public class LightOnCommand implements Command {
+        public void execute() { System.out.println("Light is ON"); }
+    }
+    public class RemoteControl {
+        private Command command;
+        public void setCommand(Command command) { this.command = command; }
+        public void pressButton() { command.execute(); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+8. What is the Adapter Pattern?
+Answer:
+The Adapter Pattern allows incompatible interfaces to work together by providing a bridge between them.
+
+Implementation:
+    public interface Target {
+        void request();
+    }
+    public class Adaptee {
+        public void specificRequest() { System.out.println("Specific Request"); }
+    }
+    public class Adapter implements Target {
+        private Adaptee adaptee;
+        public Adapter(Adaptee adaptee) { this.adaptee = adaptee; }
+        public void request() { adaptee.specificRequest(); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+9. What is the Proxy Pattern?
+Answer:
+The Proxy Pattern provides a placeholder for another object to control access to it. It is commonly used for lazy initialization or access control.
+
+Implementation:
+    public interface Service {
+        void performOperation();
+    }
+    public class RealService implements Service {
+        public void performOperation() { System.out.println("Real Service Operation"); }
+    }
+    public class ProxyService implements Service {
+        private RealService realService;
+        public void performOperation() {
+            if (realService == null) { realService = new RealService(); }
+            realService.performOperation();
+        }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+10. What is the Template Method Pattern?
+Answer:
+The Template Method Pattern defines the skeleton of an algorithm in a method, deferring some steps to subclasses.
+
+Implementation:
+    public abstract class Game {
+        public final void play() {
+            start();
+            playTurn();
+            end();
+        }
+        abstract void start();
+        abstract void playTurn();
+        abstract void end();
+    }
+    public class Chess extends Game {
+        void start() { System.out.println("Starting Chess"); }
+        void playTurn() { System.out.println("Playing Chess"); }
+        void end() { System.out.println("Ending Chess"); }
+    }
+
