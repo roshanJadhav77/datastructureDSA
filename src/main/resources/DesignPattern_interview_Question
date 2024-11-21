@@ -209,3 +209,163 @@ Implementation:
         void end() { System.out.println("Ending Chess"); }
     }
 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+Other important question
+
+1. What is SOLID, and how have you applied its principles in your projects?
+Answer:
+SOLID is a set of five principles for designing maintainable and scalable software:
+
+S: Single Responsibility Principle
+Every class should have only one responsibility.
+Example: In a payment module, I separated payment processing logic into a PaymentProcessor class and transaction logging into a TransactionLogger class.
+
+O: Open-Closed Principle
+Code should be open for extension but closed for modification.
+Example: I used interfaces for payment methods, so adding new methods (like UPI or wallet) required creating a new implementation, not modifying existing classes.
+
+L: Liskov Substitution Principle
+Subtypes should be substitutable for their base types.
+Example: I ensured CreditCardPayment and DebitCardPayment both adhered to a Payment interface without breaking functionality.
+
+I: Interface Segregation Principle
+Clients should not be forced to implement interfaces they don’t use.
+Example: I split a large OrderService interface into smaller ones like OrderPlacementService and OrderTrackingService.
+
+D: Dependency Inversion Principle
+High-level modules should depend on abstractions, not concrete implementations.
+Example: I used Spring Boot’s dependency injection to inject a NotificationService rather than instantiating it directly.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+2. Design a URL Shortener System
+Answer:
+Key components and considerations:
+
+>> Requirements:
+    > Input: Long URL → Output: Shortened URL (e.g., bit.ly/abc123).
+    > Support for millions of URLs and high traffic.
+>> Core Design:
+    > Use a Hashing Algorithm to generate a unique key (e.g., MD5, Base62 encoding).
+    > Store the mapping (long URL ↔ short URL) in a database (e.g., Redis for fast access).
+>> High-Level Architecture:
+   > API Gateway → Application Layer (Java Spring Boot) → Database.
+   > Use caching (e.g., Redis) to speed up reads.
+>> Scalability:
+   > Distribute load using a load balancer.
+   > Use consistent hashing to scale horizontally.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+How would you design a scalable e-commerce backend?
+Answer:
+
+Core Services:
+    Product Service: Manages product catalog.
+    Inventory Service: Tracks stock levels.
+    Order Service: Handles order placement and status.
+    Payment Service: Manages transactions securely.
+
+Architecture:
+    Use microservices architecture with REST APIs.
+    Use Spring Boot and Spring Cloud for service discovery, configuration, and communication.
+
+Scalability and Performance:
+    Implement caching for frequently accessed data (e.g., Redis for product details).
+    Use asynchronous processing with message queues like Kafka for tasks like sending order confirmations.
+
+Database Design:
+    Use a relational database (e.g., MySQL) for transactional data (orders, inventory).
+    Use a NoSQL database (e.g., MongoDB) for flexible product data.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Explain the use of design patterns in your projects.
+Answer:
+
+Singleton: Used for classes like ConfigurationManager to ensure only one instance exists throughout the application.
+Factory: Implemented in PaymentFactory to create objects like CreditCardPayment or UPIPayment based on input.
+Builder: Used for creating complex objects like Order with multiple optional fields.
+Observer: Used for event-driven programming, such as sending notifications when an order status changes.
+Decorator: Used for adding functionality to a class, like applying discounts to an order dynamically.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+6. How would you handle eventual consistency in a distributed system?
+Answer:
+
+Approach:
+    Use event-driven architecture with a message broker (e.g., Kafka).
+    Emit events (e.g., OrderPlaced, PaymentConfirmed) and ensure all services update their state asynchronously.
+
+Techniques:
+    Saga Pattern: Manage distributed transactions by coordinating state changes across services.
+    Retries: Automatically retry failed operations with backoff strategies.
+    Idempotency: Ensure operations like payment processing can be repeated safely.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+7. What is the difference between monolithic and microservices architectures?
+Answer:
+
+Monolithic:
+    Single codebase with tightly coupled components.
+    Easier to develop initially but harder to scale.
+
+Microservices:
+    Independent services for each functionality (e.g., Product, Payment).
+    Easier to scale and maintain but requires more effort to design and deploy.
+
+Example:
+At Landmark, I transitioned the e-commerce platform from monolithic architecture to microservices.
+This enabled independent scaling of critical services like payments during high traffic.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+8. How do you ensure API security in a backend system?
+Answer:
+
+1. Authentication and Authorization:
+    Use OAuth 2.0 or JWT for securing APIs.
+    Implement role-based access control (RBAC).
+
+2. Encryption:
+    Use HTTPS to encrypt communication.
+    Encrypt sensitive data (e.g., payment details).
+
+3. Rate Limiting:
+    Prevent abuse by limiting requests per user or IP.
+
+4. Input Validation:
+    Sanitize inputs to prevent injection attacks.
+
+5. API Gateway:
+    Use tools like Kong or WSO2 to manage routing, authentication, and throttling.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+5. Design a Rate Limiter
+Answer:
+
+Requirements:
+    Limit the number of API calls a user can make within a time frame (e.g., 100 requests/min).
+
+Approach:
+    Use Token Bucket Algorithm:
+        Each user has a bucket with a fixed capacity (e.g., 100 tokens).
+        Tokens are refilled at a fixed rate (e.g., 1 token every 600 ms).
+        A request consumes a token; if the bucket is empty, the request is denied.
+
+Implementation:
+    Use Redis for storing user buckets
+
+    public boolean isAllowed(String userId) {
+        int maxTokens = 100;
+        long refillRate = 600; // milliseconds
+        // Logic to track tokens and deny if bucket is empty
+    }
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+9. How would you design a notification system?
+Answer:
+
+Requirements:
+    Support multiple channels (email, SMS, push notifications).
+    Ensure high availability and retries for failed notifications.
+
+Architecture:
+    Use a publisher-subscriber model with Kafka.
+    A Notification Service listens to events (e.g., OrderPlaced) and triggers notifications.
