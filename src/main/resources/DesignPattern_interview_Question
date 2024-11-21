@@ -1,0 +1,371 @@
+1. What is a Singleton Pattern?
+Ans: 	The Singleton Pattern ensures that a class has only one instance and provides a global point of access to it.
+	It is often used for logging, database connections, or configuration classes.
+
+	Implementation:=
+	public class Singleton {
+	    private static Singleton instance;
+	    private Singleton() {}
+	    public static synchronized Singleton getInstance() {
+	    if (instance == null) {
+	    instance = new Singleton();
+	    }
+	  return instance;
+	  }
+	}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. What is a Factory Pattern?
+   Answer: The Factory Pattern provides an interface for creating objects but allows subclasses to alter the type of objects that will be created.
+   It helps promote loose coupling.
+
+   Implementation:
+   public interface Shape {
+       void draw();
+   }
+
+   public class Circle implements Shape {
+       public void draw() { System.out.println("Drawing Circle"); }
+   }
+   public class ShapeFactory {
+       public static Shape getShape(String type) {
+           if (type.equalsIgnoreCase("CIRCLE")) {
+               return new Circle();
+           }
+           return null;
+       }
+   }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. What is the Builder Pattern?
+Answer: The Builder Pattern constructs complex objects step by step, allowing more control over the object creation process.
+It is often used for creating immutable object
+
+public class User {
+    private String name;
+    private int age;
+
+    private User(UserBuilder builder) {
+        this.name = builder.name;
+        this.age = builder.age;
+    }
+
+    public static class UserBuilder {
+        private String name;
+        private int age;
+
+        public UserBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. What is the Observer Pattern?
+Answer:
+The Observer Pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
+It is used in event handling systems.
+
+Implementation:
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class Subject {
+        private List<Observer> observers = new ArrayList<>();
+        public void addObserver(Observer o) { observers.add(o); }
+        public void notifyObservers() {
+            for (Observer o : observers) { o.update(); }
+        }
+    }
+
+    public interface Observer {
+        void update();
+    }
+    public class ConcreteObserver implements Observer {
+        public void update() { System.out.println("Notified!"); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. What is the Strategy Pattern?
+Answer:
+The Strategy Pattern defines a family of algorithms and makes them interchangeable by encapsulating them in classes. It is often used for implementing different behaviors dynamically.
+
+Implementation:
+    public interface PaymentStrategy {
+        void pay(int amount);
+    }
+    public class CreditCardPayment implements PaymentStrategy {
+        public void pay(int amount) { System.out.println("Paid " + amount + " using Credit Card."); }
+    }
+    public class PaymentContext {
+        private PaymentStrategy strategy;
+        public PaymentContext(PaymentStrategy strategy) { this.strategy = strategy; }
+        public void executePayment(int amount) { strategy.pay(amount); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. What is the Decorator Pattern?
+Answer:
+The Decorator Pattern allows behavior to be added to an object dynamically without modifying its structure. It is commonly used in I/O Streams.
+
+Implementation:
+    public interface Coffee {
+        String getDescription();
+        double getCost();
+    }
+    public class SimpleCoffee implements Coffee {
+        public String getDescription() { return "Simple Coffee"; }
+        public double getCost() { return 5.0; }
+    }
+    public class MilkDecorator implements Coffee {
+        private Coffee coffee;
+        public MilkDecorator(Coffee coffee) { this.coffee = coffee; }
+        public String getDescription() { return coffee.getDescription() + ", Milk"; }
+        public double getCost() { return coffee.getCost() + 1.5; }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. What is the Command Pattern?
+Answer:
+The Command Pattern encapsulates a request as an object, allowing parameterization and queuing of requests. It is often used in undo/redo functionality.
+
+Implementation:
+    public interface Command {
+        void execute();
+    }
+    public class LightOnCommand implements Command {
+        public void execute() { System.out.println("Light is ON"); }
+    }
+    public class RemoteControl {
+        private Command command;
+        public void setCommand(Command command) { this.command = command; }
+        public void pressButton() { command.execute(); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+8. What is the Adapter Pattern?
+Answer:
+The Adapter Pattern allows incompatible interfaces to work together by providing a bridge between them.
+
+Implementation:
+    public interface Target {
+        void request();
+    }
+    public class Adaptee {
+        public void specificRequest() { System.out.println("Specific Request"); }
+    }
+    public class Adapter implements Target {
+        private Adaptee adaptee;
+        public Adapter(Adaptee adaptee) { this.adaptee = adaptee; }
+        public void request() { adaptee.specificRequest(); }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+9. What is the Proxy Pattern?
+Answer:
+The Proxy Pattern provides a placeholder for another object to control access to it. It is commonly used for lazy initialization or access control.
+
+Implementation:
+    public interface Service {
+        void performOperation();
+    }
+    public class RealService implements Service {
+        public void performOperation() { System.out.println("Real Service Operation"); }
+    }
+    public class ProxyService implements Service {
+        private RealService realService;
+        public void performOperation() {
+            if (realService == null) { realService = new RealService(); }
+            realService.performOperation();
+        }
+    }
+--------------------------------------------------------------------------------------------------------------------------------------------------
+10. What is the Template Method Pattern?
+Answer:
+The Template Method Pattern defines the skeleton of an algorithm in a method, deferring some steps to subclasses.
+
+Implementation:
+    public abstract class Game {
+        public final void play() {
+            start();
+            playTurn();
+            end();
+        }
+        abstract void start();
+        abstract void playTurn();
+        abstract void end();
+    }
+    public class Chess extends Game {
+        void start() { System.out.println("Starting Chess"); }
+        void playTurn() { System.out.println("Playing Chess"); }
+        void end() { System.out.println("Ending Chess"); }
+    }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+Other important question
+
+1. What is SOLID, and how have you applied its principles in your projects?
+Answer:
+SOLID is a set of five principles for designing maintainable and scalable software:
+
+S: Single Responsibility Principle
+Every class should have only one responsibility.
+Example: In a payment module, I separated payment processing logic into a PaymentProcessor class and transaction logging into a TransactionLogger class.
+
+O: Open-Closed Principle
+Code should be open for extension but closed for modification.
+Example: I used interfaces for payment methods, so adding new methods (like UPI or wallet) required creating a new implementation, not modifying existing classes.
+
+L: Liskov Substitution Principle
+Subtypes should be substitutable for their base types.
+Example: I ensured CreditCardPayment and DebitCardPayment both adhered to a Payment interface without breaking functionality.
+
+I: Interface Segregation Principle
+Clients should not be forced to implement interfaces they don’t use.
+Example: I split a large OrderService interface into smaller ones like OrderPlacementService and OrderTrackingService.
+
+D: Dependency Inversion Principle
+High-level modules should depend on abstractions, not concrete implementations.
+Example: I used Spring Boot’s dependency injection to inject a NotificationService rather than instantiating it directly.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+2. Design a URL Shortener System
+Answer:
+Key components and considerations:
+
+>> Requirements:
+    > Input: Long URL → Output: Shortened URL (e.g., bit.ly/abc123).
+    > Support for millions of URLs and high traffic.
+>> Core Design:
+    > Use a Hashing Algorithm to generate a unique key (e.g., MD5, Base62 encoding).
+    > Store the mapping (long URL ↔ short URL) in a database (e.g., Redis for fast access).
+>> High-Level Architecture:
+   > API Gateway → Application Layer (Java Spring Boot) → Database.
+   > Use caching (e.g., Redis) to speed up reads.
+>> Scalability:
+   > Distribute load using a load balancer.
+   > Use consistent hashing to scale horizontally.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+How would you design a scalable e-commerce backend?
+Answer:
+
+Core Services:
+    Product Service: Manages product catalog.
+    Inventory Service: Tracks stock levels.
+    Order Service: Handles order placement and status.
+    Payment Service: Manages transactions securely.
+
+Architecture:
+    Use microservices architecture with REST APIs.
+    Use Spring Boot and Spring Cloud for service discovery, configuration, and communication.
+
+Scalability and Performance:
+    Implement caching for frequently accessed data (e.g., Redis for product details).
+    Use asynchronous processing with message queues like Kafka for tasks like sending order confirmations.
+
+Database Design:
+    Use a relational database (e.g., MySQL) for transactional data (orders, inventory).
+    Use a NoSQL database (e.g., MongoDB) for flexible product data.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Explain the use of design patterns in your projects.
+Answer:
+
+Singleton: Used for classes like ConfigurationManager to ensure only one instance exists throughout the application.
+Factory: Implemented in PaymentFactory to create objects like CreditCardPayment or UPIPayment based on input.
+Builder: Used for creating complex objects like Order with multiple optional fields.
+Observer: Used for event-driven programming, such as sending notifications when an order status changes.
+Decorator: Used for adding functionality to a class, like applying discounts to an order dynamically.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+6. How would you handle eventual consistency in a distributed system?
+Answer:
+
+Approach:
+    Use event-driven architecture with a message broker (e.g., Kafka).
+    Emit events (e.g., OrderPlaced, PaymentConfirmed) and ensure all services update their state asynchronously.
+
+Techniques:
+    Saga Pattern: Manage distributed transactions by coordinating state changes across services.
+    Retries: Automatically retry failed operations with backoff strategies.
+    Idempotency: Ensure operations like payment processing can be repeated safely.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+7. What is the difference between monolithic and microservices architectures?
+Answer:
+
+Monolithic:
+    Single codebase with tightly coupled components.
+    Easier to develop initially but harder to scale.
+
+Microservices:
+    Independent services for each functionality (e.g., Product, Payment).
+    Easier to scale and maintain but requires more effort to design and deploy.
+
+Example:
+At Landmark, I transitioned the e-commerce platform from monolithic architecture to microservices.
+This enabled independent scaling of critical services like payments during high traffic.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+8. How do you ensure API security in a backend system?
+Answer:
+
+1. Authentication and Authorization:
+    Use OAuth 2.0 or JWT for securing APIs.
+    Implement role-based access control (RBAC).
+
+2. Encryption:
+    Use HTTPS to encrypt communication.
+    Encrypt sensitive data (e.g., payment details).
+
+3. Rate Limiting:
+    Prevent abuse by limiting requests per user or IP.
+
+4. Input Validation:
+    Sanitize inputs to prevent injection attacks.
+
+5. API Gateway:
+    Use tools like Kong or WSO2 to manage routing, authentication, and throttling.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+5. Design a Rate Limiter
+Answer:
+
+Requirements:
+    Limit the number of API calls a user can make within a time frame (e.g., 100 requests/min).
+
+Approach:
+    Use Token Bucket Algorithm:
+        Each user has a bucket with a fixed capacity (e.g., 100 tokens).
+        Tokens are refilled at a fixed rate (e.g., 1 token every 600 ms).
+        A request consumes a token; if the bucket is empty, the request is denied.
+
+Implementation:
+    Use Redis for storing user buckets
+
+    public boolean isAllowed(String userId) {
+        int maxTokens = 100;
+        long refillRate = 600; // milliseconds
+        // Logic to track tokens and deny if bucket is empty
+    }
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+9. How would you design a notification system?
+Answer:
+
+Requirements:
+    Support multiple channels (email, SMS, push notifications).
+    Ensure high availability and retries for failed notifications.
+
+Architecture:
+    Use a publisher-subscriber model with Kafka.
+    A Notification Service listens to events (e.g., OrderPlaced) and triggers notifications.
