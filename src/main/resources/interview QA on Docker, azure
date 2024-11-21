@@ -1,0 +1,95 @@
+
+# Docker, Kafka, and Azure DevOps - Interview Questions and Answers
+
+## Docker
+1. **What is Docker, and why is it used?**
+   Docker is a platform for containerizing applications, ensuring they run consistently across environments. It eliminates dependency issues and provides lightweight, portable solutions.
+
+2. **How is a container different from a virtual machine?**
+   Containers share the host OS kernel, making them lightweight and faster to start compared to VMs, which have a full OS layer.
+
+3. **Explain Docker architecture.**
+   - Docker Engine (runs containers).
+   - Images (templates for containers).
+   - Containers (runtime environments for applications).
+   - Docker Hub (repository for images).
+
+4. **What is the purpose of a Dockerfile?**
+   It automates the image creation process by defining the instructions for setting up a container (e.g., installing dependencies, copying files).
+
+5. **What are Docker volumes?**
+   Volumes store data outside the container, ensuring persistence and enabling data sharing between containers.
+
+6. **How do you scale applications with Docker?**
+   Use Docker Compose or orchestration tools like Kubernetes to scale containers horizontally.
+
+7. **How do you secure a Docker container?**
+   - Use minimal base images.
+   - Scan images for vulnerabilities.
+   - Apply proper user permissions.
+   - Avoid running containers as root.
+
+8. **What are some common Docker commands?**
+   - `docker build`, `docker run`, `docker ps`, `docker stop`, `docker rm`, `docker exec`.
+
+---
+
+## Kafka
+1. **What is Kafka?**
+   Kafka is a distributed event-streaming platform used for building real-time data pipelines and event-driven architectures.
+
+2. **Explain Kafka's architecture.**
+   Kafka has:
+   - Producers (send messages).
+   - Topics (logical channels for messages).
+   - Consumers (read messages).
+   - Brokers (Kafka servers storing and distributing messages).
+
+3. **How is Kafka different from traditional message queues?**
+   Kafka retains messages for a configurable time even after being read, allowing multiple consumers to process the same messages independently.
+
+4. **What is a Kafka partition?**
+   Topics are divided into partitions for scalability. Each partition is stored on a different broker, allowing parallel processing.
+
+5. **What is the role of Zookeeper in Kafka?**
+   Zookeeper manages metadata, tracks brokers, and coordinates leader elections. (In newer versions, Kafka has started removing Zookeeper dependencies).
+
+6. **Explain Kafka’s replication mechanism.**
+   Each partition has replicas for fault tolerance. A leader partition handles read/write, while followers replicate data for failover.
+
+7. **What is a consumer group in Kafka?**
+   A consumer group allows multiple consumers to share the workload of processing partitions in a topic.
+
+8. **How do you monitor and troubleshoot Kafka?**
+   Use tools like Prometheus, Grafana, or Kafka Manager to monitor metrics like broker health, lag, and throughput.
+
+---
+
+## Azure DevOps
+1. **What is Azure DevOps?**
+   Azure DevOps is a cloud-based platform offering CI/CD pipelines, version control, project management, and testing services.
+
+2. **What are the key components of Azure DevOps?**
+   - Azure Repos: Version control (Git).
+   - Azure Pipelines: Build and release automation.
+   - Azure Boards: Agile project management.
+   - Azure Artifacts: Package management.
+   - Azure Test Plans: Manual and automated testing.
+
+3. **Explain how CI/CD works in Azure DevOps.**
+   CI ensures code changes are automatically built and tested. CD automates deployment to staging or production. Pipelines define the process using YAML files or the GUI.
+
+4. **How do you secure an Azure DevOps pipeline?**
+   Use secure files, environment variables, role-based access control (RBAC), and secure service connections.
+
+5. **What is a Release Pipeline in Azure DevOps?**
+   A process that automates the deployment of applications to various environments (e.g., staging, production).
+
+6. **How do you implement branching strategies in Azure Repos?**
+   Use Git workflows like feature branching, Gitflow, or trunk-based development for collaboration and isolation.
+
+7. **What are self-hosted agents in Azure DevOps?**
+   Self-hosted agents run pipelines on your own infrastructure instead of Microsoft-hosted agents.
+
+8. **How do you integrate Azure DevOps with other tools?**
+   Use REST APIs, webhooks, or pre-built integrations with tools like Jira, Jenkins, and Kubernetes.

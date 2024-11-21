@@ -1,0 +1,145 @@
+
+### Java
+1. **Java 8 vs Java 11**
+   - **Java 8** introduced features like `Stream API` for functional-style data processing, `Optional` to handle null values gracefully, `Lambda Expressions` for concise code, and `Default Methods` to add functionality to interfaces without breaking existing implementations.
+   - **Java 11** added long-term support (LTS), features like the `HttpClient API` for HTTP calls, support for `var` in lambda expressions, single-file execution without compilation (`java <filename>`), and performance improvements.
+
+2. **HashMap vs ConcurrentHashMap**
+   - **HashMap**: Not thread-safe. Concurrent access by multiple threads can result in `ConcurrentModificationException`.
+   - **ConcurrentHashMap**: Thread-safe by segmenting the map and locking only the affected segment during updates, ensuring better performance under concurrency.
+
+3. **Stream API**
+   - A feature of Java 8 that provides a functional way to process data collections. It supports operations like filtering (`.filter()`), mapping (`.map()`), reducing (`.reduce()`), and sorting while enabling parallel processing for better performance.
+
+4. **Optional Class**
+   - A container object to avoid `NullPointerException`. It provides methods like `.isPresent()`, `.ifPresent()`, and `.orElse()` to handle values that may or may not be null more elegantly.
+
+5. **Garbage Collector**
+   - Responsible for reclaiming memory by removing unused objects. **G1 GC** is the default collector in Java 11, designed for low-latency applications. Others include **Parallel GC** (high throughput) and **CMS GC** (low pause time).
+
+6. **Synchronized vs ReentrantLock**
+   - **synchronized**: Implicit lock on an object or block of code, simple to use but lacks advanced features like fairness or interruption.
+   - **ReentrantLock**: Provides manual locking/unlocking with features like tryLock (non-blocking), lockInterruptibly, and fairness policies.
+
+7. **Lambda Expressions**
+   - Enables functional programming with concise syntax. For example, `(x, y) -> x + y` replaces boilerplate code. Drawback: Complex lambdas can reduce code readability.
+
+8. **ExecutorService**
+   - A framework for managing thread pools. It simplifies thread management with methods like `.submit()` (asynchronous tasks), `.shutdown()`, and `.invokeAll()` (execute multiple tasks simultaneously).
+
+9. **equals() vs ==**
+   - **`equals()`**: Checks logical equality between objects.
+   - **`==`**: Compares object references (whether they point to the same memory location).
+
+10. **Exception Handling**
+   - Use try-catch-finally blocks for robust error handling. Throw custom exceptions for specific scenarios and log errors using frameworks like Log4j for easier debugging.
+
+### Spring Boot
+1. **What is Spring Boot?**
+   - A framework for building Spring-based applications with minimal configuration. It provides embedded servers (Tomcat), auto-configuration, and production-ready features (e.g., Actuator).
+
+2. **Configuration Management**
+   - Spring Boot uses `application.properties` or `application.yml` for managing configurations. For externalized configs, integrate Spring Cloud Config Server.
+
+3. **Spring Boot Starters**
+   - Pre-configured dependencies for faster development. Example: `spring-boot-starter-web` includes everything needed for creating RESTful APIs.
+
+4. **Spring Boot Actuator**
+   - Adds production-ready features like monitoring and health checks (`/actuator/health`). It supports exposing metrics to monitoring tools.
+
+5. **Securing Applications**
+   - Use Spring Security for authentication (e.g., OAuth2, JWT) and API gateways (e.g., Kong, WSO2) for securing endpoints.
+
+6. **Spring Bean Lifecycle**
+   - Beans are instantiated, dependencies injected, and initialized before use. Post-initialization hooks include `@PostConstruct` or `InitializingBean`.
+
+7. **Dependency Injection**
+   - The process of injecting dependencies into objects managed by Spring’s IoC container using `@Autowired`, constructors, or setters.
+
+8. **Spring Data JPA**
+   - Simplifies database interactions. Use repositories (e.g., `JpaRepository`) to perform CRUD operations without writing SQL queries.
+
+9. **Profiles**
+   - Used for environment-specific configurations (`dev`, `test`, `prod`). Define profile-specific properties in files like `application-dev.yml`.
+
+10. **@RestController vs @Controller**
+    - `@RestController`: Returns JSON or XML directly.
+    - `@Controller`: Used for rendering UI templates (e.g., JSP, Thymeleaf).
+
+### Microservices
+1. **What are Microservices?**
+   - A design pattern for building loosely coupled services, each responsible for a specific functionality, communicating via APIs.
+
+2. **Communication**
+   - Services communicate using REST APIs, message brokers (e.g., Kafka), or gRPC for high-performance use cases.
+
+3. **Challenges**
+   - Include managing service dependencies, ensuring data consistency, handling failures, and monitoring distributed systems.
+
+4. **Circuit Breaker Pattern**
+   - Prevents cascading failures by breaking connections to failing services after repeated failures (e.g., Netflix Hystrix or Resilience4j).
+
+5. **Service Discovery**
+   - Dynamically register and discover services using tools like Eureka, Consul, or Zookeeper.
+
+6. **Data Consistency**
+   - Use eventual consistency models with event-driven approaches (e.g., Kafka). For transactions, implement Saga patterns.
+
+7. **Kafka in Microservices**
+   - Used as a distributed messaging system for asynchronous communication, decoupling services and ensuring scalability.
+
+8. **API Gateway**
+   - Acts as a reverse proxy for managing requests, load balancing, and authentication (e.g., Kong, Zuul, API Gateway).
+
+9. **Monitoring and Logging**
+   - Use distributed tracing (e.g., Zipkin, Jaeger) and monitoring stacks like ELK (Elasticsearch, Logstash, Kibana).
+
+10. **Failure Handling**
+    - Implement retry mechanisms, fallbacks, and dead-letter queues for managing message failures.
+
+### E-commerce Domain
+1. **High Traffic Scalability**
+   - Use load balancers, CDNs, caching (Redis), and cloud-based scaling solutions like Kubernetes.
+
+2. **Payment Gateway Integration**
+   - Integrate REST APIs for payment providers. Follow PCI-DSS compliance and secure communication using HTTPS.
+
+3. **Transaction Security**
+   - Use encryption for sensitive data, secure APIs with OAuth2, and implement tokenization for credit card details.
+
+4. **Omni-channel Functionality**
+   - Synchronize inventory, payments, and orders across all platforms using event-driven architecture.
+
+5. **Optimizing Search**
+   - Use tools like Elasticsearch for fast and efficient search capabilities, especially for filtering and faceted search.
+
+6. **Inventory Management**
+   - Use event-driven mechanisms to update stock levels in real time, leveraging Kafka for asynchronous updates.
+
+7. **Challenges**
+   - Ensure uptime, handle peak traffic, secure sensitive data, and optimize response times for better user experience.
+
+8. **Scalability Testing**
+   - Use JMeter to simulate concurrent users and identify bottlenecks.
+
+9. **Caching Strategies**
+   - Cache frequently accessed data like product details using Redis or in-memory caches like Ehcache.
+
+10. **Session Management**
+    - Use distributed session stores like Redis for managing user sessions in a stateless architecture.
+
+### General Questions
+1. **Challenging Project**
+   - Describe the transition of Landmark’s app from monolith to microservices. Highlight challenges like breaking down services and ensuring communication via Kafka.
+
+2. **Ensuring Quality**
+   - Write JUnit and Mockito tests for unit testing, peer code reviews, and automate pipelines for CI/CD with Jenkins or Azure DevOps.
+
+3. **Performance Optimization**
+   - Improve query performance, implement caching, and use thread optimization techniques in Java.
+
+4. **Debugging Issues**
+   - Leverage logs, distributed tracing, and breakpoints in IDEs for root cause analysis.
+
+5. **Task Prioritization**
+   - Use Agile boards (Jira, Confluence), prioritize based on impact, and follow iterative development to meet deadlines.

@@ -1,7 +1,14 @@
 # Datastructure
 
 ### Design Pattern :
+* [Opps, Java interview QA](https://github.com/roshanJadhav77/datastructureDSA/blob/string-coding/src/main/resources/important%20interview%20QA)
+
+
+### Design Pattern :
  * [Software design interview questions](https://github.com/roshanJadhav77/datastructureDSA/commit/5e3b431ee60538c3228eeac4ef4ac6eb469158a7)
+
+### Docker, Azure  :
+* [Docker, Kafka, and Azure DevOps - Interview Questions and Answers](https://github.com/roshanJadhav77/datastructureDSA/blob/string-coding/src/main/resources/interview%20QA%20on%20Docker%2C%20azure)
 
 ### Array :
 * [Highest occurrence of element in array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/HighestOccurance.java)
