@@ -1,0 +1,231 @@
+Here’s a comprehensive list of design pattern interview questions and answers tailored to your experience in the payment model of
+an e-commerce application. Each pattern is explained with a definition, real-world relevance, example from payment systems,
+and code illustration
+
+1. What is the Singleton Pattern?
+Definition:
+The Singleton Pattern ensures a class has only one instance and provides a global point of access to it.
+
+Real-World Use Case in Payment Model:
+You can use a Singleton for managing a PaymentGateway instance to ensure consistent API configurations and avoid reinitialization
+during multiple transactions.
+
+Code Example:
+    public class PaymentGateway {
+        private static PaymentGateway instance;
+
+        private PaymentGateway() {
+            System.out.println("Initializing Payment Gateway...");
+        }
+
+        public static synchronized PaymentGateway getInstance() {
+            if (instance == null) {
+                instance = new PaymentGateway();
+            }
+            return instance;
+        }
+
+        public void processPayment(String orderId, double amount) {
+            System.out.println("Processing payment of " + amount + " for order " + orderId);
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            PaymentGateway gateway = PaymentGateway.getInstance();
+            gateway.processPayment("ORD123", 100.0);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+2. What is the Factory Pattern?
+
+Definition:
+The Factory Pattern provides an interface for creating objects without exposing the creation logic, allowing flexibility
+in the type of objects created.
+
+Real-World Use Case in Payment Model:
+Use the Factory Pattern to instantiate different PaymentMethod objects based on the user’s choice (e.g., Credit Card, UPI, Wallet).
+
+Code Example:
+    public interface PaymentMethod {
+        void pay(double amount);
+    }
+
+    public class CreditCardPayment implements PaymentMethod {
+        public void pay(double amount) {
+            System.out.println("Paid " + amount + " using Credit Card.");
+        }
+    }
+
+    public class PaymentMethodFactory {
+        public static PaymentMethod getPaymentMethod(String type) {
+            switch (type.toUpperCase()) {
+                case "CREDIT_CARD": return new CreditCardPayment();
+                case "UPI": return new UpiPayment();
+                default: throw new IllegalArgumentException("Invalid Payment Method");
+            }
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            PaymentMethod method = PaymentMethodFactory.getPaymentMethod("CREDIT_CARD");
+            method.pay(150.0);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+3. What is the Strategy Pattern?
+Definition:
+The Strategy Pattern defines a family of algorithms and encapsulates them, allowing dynamic selection of an algorithm at runtime.
+
+Real-World Use Case in Payment Model:
+Apply different discount strategies during payment processing (e.g., Seasonal Discounts, Membership Discounts).
+
+Code Example:
+    public interface DiscountStrategy {
+        double calculateDiscount(double amount);
+    }
+
+    public class MembershipDiscount implements DiscountStrategy {
+        public double calculateDiscount(double amount) {
+            return amount * 0.15; // 15% discount
+        }
+    }
+
+    public class PaymentProcessor {
+        private DiscountStrategy discountStrategy;
+
+        public PaymentProcessor(DiscountStrategy discountStrategy) {
+            this.discountStrategy = discountStrategy;
+        }
+
+        public double processPayment(double amount) {
+            double discount = discountStrategy.calculateDiscount(amount);
+            return amount - discount;
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            DiscountStrategy discount = new MembershipDiscount();
+            PaymentProcessor processor = new PaymentProcessor(discount);
+            double finalAmount = processor.processPayment(200.0);
+            System.out.println("Final amount after discount: " + finalAmount);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+
+4. What is the Observer Pattern?
+Definition:
+The Observer Pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified.
+
+Real-World Use Case in Payment Model:
+Notify customers via email or SMS when a payment status changes (e.g., success, failure).
+
+Code Example:
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public interface PaymentObserver {
+        void update(String status);
+    }
+
+    public class EmailNotification implements PaymentObserver {
+        public void update(String status) {
+            System.out.println("Email sent for payment status: " + status);
+        }
+    }
+
+    public class PaymentNotifier {
+        private List<PaymentObserver> observers = new ArrayList<>();
+
+        public void addObserver(PaymentObserver observer) {
+            observers.add(observer);
+        }
+
+        public void notifyObservers(String status) {
+            for (PaymentObserver observer : observers) {
+                observer.update(status);
+            }
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            PaymentNotifier notifier = new PaymentNotifier();
+            notifier.addObserver(new EmailNotification());
+            notifier.notifyObservers("Success");
+        }
+    }
+
+ -----------------------------------------------------------------------------------------------------------------------
+ 7. What is the Command Pattern?
+ Definition:
+ The Command Pattern encapsulates a request as an object, allowing you to parameterize methods, delay execution, or support undoable operations.
+
+ Real-World Use Case in Payment Model:
+ Implement retry logic or support for undoing failed payments in the payment system. For example, if a payment fails,
+ you can encapsulate the retry request as a command to be executed later.
+
+ Code Example:
+    // Command Interface
+    public interface PaymentCommand {
+        void execute();
+    }
+
+    // Concrete Command for Payment Retry
+    public class RetryPaymentCommand implements PaymentCommand {
+        private PaymentService paymentService;
+        private String orderId;
+        private double amount;
+
+        public RetryPaymentCommand(PaymentService paymentService, String orderId, double amount) {
+            this.paymentService = paymentService;
+            this.orderId = orderId;
+            this.amount = amount;
+        }
+
+        @Override
+        public void execute() {
+            paymentService.processPayment(orderId, amount);
+        }
+    }
+
+    // Receiver Class
+    public class PaymentService {
+        public void processPayment(String orderId, double amount) {
+            System.out.println("Processing payment of " + amount + " for order " + orderId);
+        }
+    }
+
+    // Invoker
+    public class PaymentInvoker {
+        private PaymentCommand command;
+
+        public void setCommand(PaymentCommand command) {
+            this.command = command;
+        }
+
+        public void executeCommand() {
+            command.execute();
+        }
+    }
+
+    // Client
+    public class Main {
+        public static void main(String[] args) {
+            PaymentService paymentService = new PaymentService();
+            PaymentCommand retryPayment = new RetryPaymentCommand(paymentService, "ORD456", 200.0);
+
+            PaymentInvoker invoker = new PaymentInvoker();
+            invoker.setCommand(retryPayment);
+            invoker.executeCommand();
+        }
+    }
+
+
+
+
