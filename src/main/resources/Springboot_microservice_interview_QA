@@ -1,0 +1,294 @@
+Spring Boot Questions
+
+1. What is Spring Boot, and why is it used?
+Answer:
+Spring Boot simplifies the development of Spring-based applications by providing:
+
+-   Auto-configuration to eliminate boilerplate configuration code.
+-   Embedded servers (e.g., Tomcat, Jetty) for running applications.
+-   Production-ready features like Actuator for monitoring.
+Example from Work:
+    In your payment model, Spring Boot was used to create a Payment Service API with embedded Tomcat, enabling faster
+deployment without external server configurations.
+
+------------------------------------------------------------------------------------------------------------------------
+1. What is Spring Boot, and how is it different from Spring Framework?
+Answer:
+
+Spring Boot simplifies the configuration of Spring applications by providing
+    auto-configuration,
+    embedded servers, and
+    production-ready features.
+It eliminates the need for XML-based configuration.
+
+------------------------------------------------------------------------------------------------------------------------
+2. Explain key annotations in Spring Boot and their uses.
+Annotation	Description
+    @SpringBootApplication : Combines @Configuration, @EnableAutoConfiguration, and @ComponentScan.
+                             Entry point for Spring Boot applications.
+           @RestController : Combines @Controller and @ResponseBody to simplify REST API creation.
+           @RequestMapping : Maps HTTP requests to handler methods at the class or method level.
+              @GetMapping,
+              @PostMapping : Specialized annotations for HTTP GET and POST methods.
+                @Autowired : Injects dependencies automatically using Spring's IoC container.
+            @Configuration : Marks a class as a source of bean definitions for the application context.
+                   @Entity : Marks a class as a JPA entity for database mapping.
+               @Repository : Indicates a DAO component.
+                  @Service : Marks a class as a service layer component.
+
+------------------------------------------------------------------------------------------------------------------------
+5. What is @EnableAutoConfiguration?
+Answer:
+This annotation allows Spring Boot to automatically configure beans based on dependencies in the classpath.
+
+------------------------------------------------------------------------------------------------------------------------
+6. How do you enable caching in Spring Boot?
+Answer:
+
+Use @EnableCaching to enable caching at the application class level.
+Use @Cacheable, @CacheEvict, and @CachePut for specific caching operations method level.
+
+    @EnableCaching
+    @Configuration
+    public class CacheConfig {
+    }
+
+    @Cacheable("payments")
+    public Payment getPaymentById(String id) {
+        // Simulated DB call
+        return paymentRepository.findById(id).orElse(null);
+    }
+
+
+------------------------------------------------------------------------------------------------------------------------
+2. How do you handle application configuration in Spring Boot?
+Answer:
+Spring Boot uses the application.properties or application.yml file to manage configurations such as database credentials, port numbers, and custom properties.
+
+Example:
+In your payment system, properties like the payment gateway URL and credentials were stored in application.properties:
+
+    payment.gateway.url=https://api.paymentgateway.com
+    payment.gateway.apiKey=abcd1234
+    server.port=8080
+
+------------------------------------------------------------------------------------------------------------------------
+
+3. How do you implement exception handling in Spring Boot?
+Answer:
+Use @ControllerAdvice and @ExceptionHandler to create a global exception-handling mechanism.
+
+Example from Work:
+For handling Payment Processing Errors, a global exception handler was created:
+
+    @RestControllerAdvice
+    public class GlobalExceptionHandler {
+        @ExceptionHandler(PaymentFailedException.class)
+        public ResponseEntity<String> handlePaymentFailure(PaymentFailedException ex) {
+            return new ResponseEntity<>("Payment failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+4. What is Spring Boot Actuator, and how did you use it?
+Answer:
+Spring Boot Actuator provides endpoints to monitor and manage applications (e.g., /actuator/health, /actuator/metrics).
+
+Example:
+In your payment model, Actuator was used to monitor the health of the Payment Service:
+
+------------------------------------------------------------------------------------------------------------------------
+Microservices Questions
+
+11. What are patterns used in microservices?
+Answer:
+
+Saga Pattern: Handles distributed transactions.
+Circuit Breaker: Prevents cascading failures.
+Bulkhead Pattern: Isolates failures to prevent system-wide crashes.
+
+------------------------------------------------------------------------------------------------------------------------
+
+5. What is the difference between Monolithic and Microservices Architectures?
+Answer:
+
+Monolithic: A single, tightly coupled codebase.
+Microservices: Independent, loosely coupled services for different business functionalities.
+Example:
+In your work, you transitioned the Payment Module from a monolithic architecture to a microservice, allowing independent
+scaling of payment processing during high traffic.
+
+------------------------------------------------------------------------------------------------------------------------
+6. How do microservices communicate with each other?
+Answer:
+Microservices communicate using:
+
+Synchronous: REST APIs or gRPC for real-time requests.
+Asynchronous: Messaging systems like Kafka or RabbitMQ for event-driven communication.
+Example from Work:
+The Payment Service communicated with the Order Service using REST APIs to update payment status and published events
+like PaymentSuccess to Kafka for inventory updates.
+
+------------------------------------------------------------------------------------------------------------------------
+
+7. What is service discovery, and how is it implemented?
+Answer:
+Service discovery enables services to register and discover other services dynamically.
+This is often implemented using Eureka in Spring Cloud.
+
+Example:
+In your e-commerce application, the Payment Service registered with Eureka:
+    eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+    spring.application.name=payment-service
+
+------------------------------------------------------------------------------------------------------------------------
+8. How do you secure microservices?
+Answer:
+
+Authentication/Authorization: Use OAuth 2.0 or JWT.
+Gateway Security: Secure APIs with API Gateway and rate limiting.
+Service-to-Service Security: Use mutual TLS or token-based authentication.
+Example:
+In your payment system, the API Gateway validated JWT tokens before forwarding requests to the Payment Service:
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests(auth -> auth.anyRequest().authenticated())
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+        return http.build();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+REST API Questions
+
+API Annotations
+Annotation	    Purpose
+-----------     --------
+@PathVariable	Extracts values from the URI path.
+@RequestParam	Extracts query parameters from the URL.
+@RequestBody	Binds the HTTP request body to a method parameter.
+@ResponseBody	Indicates that a method’s return value is serialized into the HTTP response body.
+@CrossOrigin	Enables CORS for specific APIs.
+@Valid	        Validates request payloads against constraints.
+@ResponseStatus	Sets the HTTP status for a response.
+
+------------------------------------------------------------------------------------------------------------------------
+
+9. What are the key principles of REST?
+Answer:
+
+>> Statelessness: Each request is independent.
+>> Client-Server Separation: The client and server remain decoupled.
+>> Uniform Interface: Use consistent resource URIs (e.g., /payments).
+>> Cacheable: Responses can be cached to improve performance.
+>> Layered System: API calls can pass through intermediaries like gateways.
+
+------------------------------------------------------------------------------------------------------------------------
+10. How do you design RESTful APIs for the Payment System?
+Answer:
+Design resources as nouns and use HTTP methods like GET, POST, and DELETE.
+
+Example:
+    POST /payments
+    Request Body: { "orderId": "123", "amount": 500.0 }
+    Response: 201 Created
+
+    GET /payments/{id}
+    Response: { "paymentId": "456", "orderId": "123", "status": "SUCCESS" }
+
+------------------------------------------------------------------------------------------------------------------------
+11. How do you handle API versioning in REST APIs?
+Answer:
+Version APIs to avoid breaking changes. Use one of the following:
+
+>> URI Versioning: /v1/payments
+>> Header Versioning: Add Version: 1 in headers.
+Example:
+    @RequestMapping("/v1/payments")
+    @RestController
+    public class PaymentController {
+        @PostMapping
+        public ResponseEntity<String> processPayment(@RequestBody PaymentRequest request) {
+            return ResponseEntity.ok("Payment processed for order: " + request.getOrderId());
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+12. How do you test REST APIs?
+Answer:
+
+Unit Testing: Use JUnit and Mockito.
+Integration Testing: Use Spring Boot's @SpringBootTest with tools like TestRestTemplate.
+API Testing: Use Postman or automated tools like RestAssured.
+Example of Integration Test for Payment API:
+
+    @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    public class PaymentControllerTest {
+        @Autowired
+        private TestRestTemplate restTemplate;
+
+        @Test
+        public void testProcessPayment() {
+            PaymentRequest request = new PaymentRequest("123", 500.0);
+            ResponseEntity<String> response = restTemplate.postForEntity("/v1/payments", request, String.class);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+13. How do you handle errors in REST APIs?
+Answer:
+Use standardized HTTP status codes and custom error responses:
+
+400: Bad Request
+404: Not Found
+500: Internal Server Error
+Example:
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class PaymentNotFoundException extends RuntimeException {
+        public PaymentNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+Let’s discuss status codes with their meanings:
+
+1xx – Informational Response (These status codes are all about the information received by the server when a request is made).
+2xx – Success (This status code depicts that the request made has been fulfilled by the server and the expected response has been achieved).
+    200 OK
+    201 Created
+    202 Accepted
+
+3xx – Redirection (The requested URL is redirected elsewhere).
+4xx – Client Errors (This indicates that the page is not found).
+    400 Bad Request
+    401 Unauthorized
+    402 Payment Required
+    403 Forbidden
+    404 Not Found
+    405 Method Not Allowed
+    406 Not Acceptable
+    407 Proxy Authentication Required
+    408 Request Timeout
+    409 Conflict
+
+5xx – Server Errors (A request made by the client but the server fails to complete the request).
+    500 Internal Server Error
+    501 Not Implemented
+    502 Bad Gateway
+
+------------------------------------------------------------------------------------------------------------------------
+14. What are Idempotency and its importance in REST APIs?
+Answer:
+Idempotency ensures that making the same request multiple times produces the same result.
+Example: Payment requests are idempotent to avoid duplicate charges:
+    @PostMapping("/payments")
+    public ResponseEntity<String> processPayment(@RequestBody PaymentRequest request) {
+        if (paymentExists(request.getOrderId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Payment already processed.");
+        }
+        return ResponseEntity.ok("Payment processed.");
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+
