@@ -1,0 +1,168 @@
+1. What is the Saga Pattern?
+Definition:
+The Saga Pattern is a design pattern for managing distributed transactions in microservices. Instead of using a single
+global transaction, it breaks a transaction into a series of smaller steps, where each step is a local transaction in a service.
+If one step fails, a compensating action is triggered to rollback changes made by the previous steps.
+
+Use Case in Payment Systems:
+A payment processing workflow that involves multiple services like Order Service, Payment Service, and Inventory Service.
+If payment fails, the order and inventory changes should be rolled back.
+
+Example:
+    // Step 1: Place Order
+    class PlaceOrderService {
+        public void placeOrder(String orderId) {
+            System.out.println("Order placed: " + orderId);
+        }
+
+        public void rollbackOrder(String orderId) {
+            System.out.println("Order rolled back: " + orderId);
+        }
+    }
+
+    // Step 2: Deduct Payment
+    class PaymentService {
+        public void processPayment(String orderId, double amount) {
+            if (amount > 1000) {
+                throw new RuntimeException("Payment failed for order: " + orderId);
+            }
+            System.out.println("Payment processed for order: " + orderId);
+        }
+
+        public void refundPayment(String orderId) {
+            System.out.println("Payment refunded for order: " + orderId);
+        }
+    }
+
+    // Step 3: Update Inventory
+    class InventoryService {
+        public void updateInventory(String orderId) {
+            System.out.println("Inventory updated for order: " + orderId);
+        }
+
+        public void rollbackInventory(String orderId) {
+            System.out.println("Inventory rollback for order: " + orderId);
+        }
+    }
+
+    // Saga Orchestrator
+    class SagaOrchestrator {
+        public void executeSaga(String orderId, double amount) {
+            PlaceOrderService orderService = new PlaceOrderService();
+            PaymentService paymentService = new PaymentService();
+            InventoryService inventoryService = new InventoryService();
+
+            try {
+                orderService.placeOrder(orderId);
+                paymentService.processPayment(orderId, amount);
+                inventoryService.updateInventory(orderId);
+                System.out.println("Transaction completed successfully!");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                orderService.rollbackOrder(orderId);
+                paymentService.refundPayment(orderId);
+                inventoryService.rollbackInventory(orderId);
+            }
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            SagaOrchestrator orchestrator = new SagaOrchestrator();
+            orchestrator.executeSaga("ORD123", 1500); // Simulate payment failure
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+2. What is the Circuit Breaker Pattern?
+Definition:
+The Circuit Breaker Pattern is used to prevent cascading failures in distributed systems by temporarily halting requests
+to a failing service.
+
+Use Case in Payment Systems:
+If a third-party payment gateway is unresponsive, the circuit breaker can block further requests and fallback to an alternative.
+
+Example:
+    class CircuitBreaker {
+        private boolean open = false;
+
+        public boolean isOpen() {
+            return open;
+        }
+
+        public void open() {
+            System.out.println("Circuit opened. Blocking further requests.");
+            open = true;
+        }
+
+        public void close() {
+            System.out.println("Circuit closed. Resuming requests.");
+            open = false;
+        }
+    }
+
+    class PaymentGateway {
+        private CircuitBreaker circuitBreaker = new CircuitBreaker();
+
+        public void processPayment(String orderId, double amount) {
+            if (circuitBreaker.isOpen()) {
+                System.out.println("Request blocked for order: " + orderId);
+                return;
+            }
+
+            try {
+                System.out.println("Processing payment for order: " + orderId);
+                // Simulate gateway failure
+                throw new RuntimeException("Gateway timeout");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                circuitBreaker.open();
+            }
+        }
+    }
+
+    public class CircuitBreakerExample {
+        public static void main(String[] args) {
+            PaymentGateway gateway = new PaymentGateway();
+            gateway.processPayment("ORD123", 500.0);
+            gateway.processPayment("ORD124", 600.0);
+        }
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+3. How would you handle failures in a microservices architecture without using the Circuit Breaker Pattern?
+
+1. Retry Pattern
+Definition:
+Automatically retry a failed request a certain number of times before considering it a permanent failure.
+
+Implementation:
+
+Configure retry logic with exponential backoff to avoid overwhelming the failing service.
+Use libraries like Resilience4j or Spring Retry for managing retries in Java.
+Example in Payment Systems:
+Retry a failed payment gateway request before marking it as failed.
+
+    public class PaymentService {
+        public void processPayment(String orderId, double amount) {
+            int retries = 3;
+            while (retries > 0) {
+                try {
+                    System.out.println("Attempting payment for order: " + orderId);
+                    // Simulate random failure
+                    if (Math.random() > 0.5) {
+                        throw new RuntimeException("Payment gateway error");
+                    }
+                    System.out.println("Payment successful for order: " + orderId);
+                    return;
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                    retries--;
+                    if (retries == 0) {
+                        System.out.println("Payment failed after retries for order: " + orderId);
+                    }
+                }
+            }
+        }
+    }
+
