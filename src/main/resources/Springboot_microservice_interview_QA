@@ -63,7 +63,8 @@ Use @Cacheable, @CacheEvict, and @CachePut for specific caching operations metho
 ------------------------------------------------------------------------------------------------------------------------
 2. How do you handle application configuration in Spring Boot?
 Answer:
-Spring Boot uses the application.properties or application.yml file to manage configurations such as database credentials, port numbers, and custom properties.
+Spring Boot uses the application.properties or application.yml file to manage configurations such as database credentials,
+port numbers, and custom properties.
 
 Example:
 In your payment system, properties like the payment gateway URL and credentials were stored in application.properties:
@@ -122,9 +123,8 @@ scaling of payment processing during high traffic.
 6. How do microservices communicate with each other?
 Answer:
 Microservices communicate using:
-
-Synchronous: REST APIs or gRPC for real-time requests.
-Asynchronous: Messaging systems like Kafka or RabbitMQ for event-driven communication.
+    Synchronous: REST APIs or gRPC for real-time requests.
+    Asynchronous: Messaging systems like Kafka or RabbitMQ for event-driven communication.
 Example from Work:
 The Payment Service communicated with the Order Service using REST APIs to update payment status and published events
 like PaymentSuccess to Kafka for inventory updates.
@@ -145,9 +145,9 @@ In your e-commerce application, the Payment Service registered with Eureka:
 8. How do you secure microservices?
 Answer:
 
-Authentication/Authorization: Use OAuth 2.0 or JWT.
-Gateway Security: Secure APIs with API Gateway and rate limiting.
-Service-to-Service Security: Use mutual TLS or token-based authentication.
+    Authentication/Authorization: Use OAuth 2.0 or JWT.
+    Gateway Security: Secure APIs with API Gateway and rate limiting.
+    Service-to-Service Security: Use mutual TLS or token-based authentication.
 Example:
 In your payment system, the API Gateway validated JWT tokens before forwarding requests to the Payment Service:
 
@@ -291,4 +291,169 @@ Example: Payment requests are idempotent to avoid duplicate charges:
     }
 
 ------------------------------------------------------------------------------------------------------------------------
+WebClient
 
+1. What is WebClient in Spring?
+Answer:
+    * WebClient is a non-blocking, reactive HTTP client introduced in Spring WebFlux.
+    * It is an alternative to the older RestTemplate
+    * supports asynchronous communication.
+
+------------------------------------------------------------------------------------------------------------------------
+2. What are the advantages of using WebClient over RestTemplate?
+Answer:
+
+    1. Reactive and Non-blocking: Suitable for high-throughput applications.
+    2. Supports Asynchronous Calls: Ideal for APIs with long response times.
+    3. Streaming: Can handle large responses in a streaming manner.
+    4. Functional API: More flexible and concise than RestTemplate.
+
+------------------------------------------------------------------------------------------------------------------------
+3. How do you configure a WebClient?
+Answer:
+    You can configure WebClient using the WebClient.Builder.
+
+Example:
+    @Bean
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("https://api.paymentgateway.com")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+4. What are the key methods of WebClient?
+Answer:
+    Method	Purpose
+    get()	Makes an HTTP GET request.
+    post()	Makes an HTTP POST request.
+    retrieve()	Fetches the response body and handles errors.
+    exchangeToMono()	Provides full control over the response.
+    bodyToMono()	Maps the response body to a Mono.
+    onStatus()	Handles HTTP status-specific errors.
+
+------------------------------------------------------------------------------------------------------------------------
+5. How do you handle errors in WebClient?
+Answer:
+Use onStatus() to handle HTTP status codes and transform them into exceptions.
+
+Example from Work:
+In the Payment Service, handle HTTP 400 (Bad Request) and HTTP 500 (Server Error) from the Payment Gateway:
+    WebClient webClient = WebClient.create();
+
+    public String processPayment(String orderId, double amount) {
+        return webClient.post()
+                .uri("/payments")
+                .bodyValue(new PaymentRequest(orderId, amount))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse ->
+                    Mono.error(new RuntimeException("Client error occurred")))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse ->
+                    Mono.error(new RuntimeException("Server error occurred")))
+                .bodyToMono(String.class)
+                .block();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+6. How do you make a POST request using WebClient?
+Answer:
+Use the post() method and provide the request body using bodyValue().
+
+Example from Work:
+Send a payment request to an external Payment Gateway:
+    public String initiatePayment(String orderId, double amount) {
+        return webClient.post()
+                .uri("/payments")
+                .bodyValue(new PaymentRequest(orderId, amount))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+7. How do you perform asynchronous calls with WebClient?
+Answer:
+WebClient returns a Mono or Flux, which you can "subscribe" to for asynchronous handling.
+
+Example from Work:
+In the Payment Service, asynchronously notify the Order Service after payment success:
+
+    public void notifyOrderService(String orderId) {
+        webClient.post()
+                .uri("/orders/{id}/notify", orderId)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .subscribe(response -> System.out.println("Order notified successfully"),
+                           error -> System.err.println("Error notifying order: " + error.getMessage()));
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+8. How do you log WebClient requests and responses?
+Answer:
+Use a filter to log WebClient activity.
+
+Example from Work:
+Log payment requests and responses for debugging:
+
+    @Bean
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("https://api.paymentgateway.com")
+                .filter((request, next) -> {
+                    System.out.println("Request: " + request.url());
+                    return next.exchange(request)
+                               .doOnNext(response -> System.out.println("Response: " + response.statusCode()));
+                })
+                .build();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+9. How do you handle timeouts in WebClient?
+Answer:
+Use a timeout() operator to limit the time for responses.
+
+Example from Work:
+Set a timeout for payment gateway responses to avoid blocking:
+    public String processPaymentWithTimeout(String orderId, double amount) {
+        return webClient.post()
+                .uri("/payments")
+                .bodyValue(new PaymentRequest(orderId, amount))
+                .retrieve()
+                .bodyToMono(String.class)
+                .timeout(Duration.ofSeconds(5))
+                .onErrorResume(TimeoutException.class, e -> Mono.just("Payment service timeout"))
+                .block();
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+10. How do you use WebClient in reactive microservices?
+Answer:
+WebClient is ideal for non-blocking inter-service communication in microservices.
+
+Example from Work:
+The Order Service calls the Payment Service to confirm the payment status:
+
+    public Mono<String> confirmPayment(String paymentId) {
+        return webClient.get()
+                .uri("/payments/{id}", paymentId)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+------------------------------------------------------------------------------------------------------------------------
+11. How do you handle backpressure with WebClient?
+Answer:
+Use Flux to manage streaming responses and apply backpressure techniques like limiting the rate of requests.
+
+Example from Work:
+Handle a large response from the payment history API in chunks:
+    public Flux<PaymentHistory> getPaymentHistory() {
+        return webClient.get()
+                .uri("/payments/history")
+                .retrieve()
+                .bodyToFlux(PaymentHistory.class)
+                .limitRate(10); // Process 10 items at a time
+    }
+
+------------------------------------------------------------------------------------------------------------------------
