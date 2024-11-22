@@ -3,10 +3,6 @@
 ### Opps,java interview :
 * [Opps, Java interview QA](https://github.com/roshanJadhav77/datastructureDSA/blob/string-coding/src/main/resources/important%20interview%20QA)
 
-### Springboot, Microservice, WebClient and RestAPI interview :
-* [Springboot, Microservice, WebClient and RestAPI interview QA](https://github.com/roshanJadhav77/datastructureDSA/blob/string-coding/src/main/resources/Springboot_microservice_interview_QA)
-
-
 ### Design Pattern :
  * [Software design interview questions](https://github.com/roshanJadhav77/datastructureDSA/commit/5e3b431ee60538c3228eeac4ef4ac6eb469158a7)
  * [Real time Software design interview questions](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/resources/DesingPatternWIthRealTImeExample)
