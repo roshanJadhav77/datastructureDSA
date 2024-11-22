@@ -1,7 +1,29 @@
-Here’s a comprehensive list of design pattern interview questions and answers tailored to your experience in the payment model of
-an e-commerce application. Each pattern is explained with a definition, real-world relevance, example from payment systems,
-and code illustration
 
+1. What is SOLID, and how have you applied its principles in your projects?
+Answer:
+SOLID is a set of five principles for designing maintainable and scalable software:
+
+S: Single Responsibility Principle
+    Every class should have only one responsibility.
+    Example: In a payment module, I separated payment processing logic into a PaymentProcessor class and transaction logging into a TransactionLogger class.
+
+O: Open-Closed Principle
+    Code should be open for extension but closed for modification.
+    Example: I used interfaces for payment methods, so adding new methods (like UPI or wallet) required creating a new implementation, not modifying existing classes.
+
+L: Liskov Substitution Principle
+    Subtypes should be substitutable for their base types.
+    Example: I ensured CreditCardPayment and DebitCardPayment both adhered to a Payment interface without breaking functionality.
+
+I: Interface Segregation Principle
+    Clients should not be forced to implement interfaces they don’t use.
+    Example: I split a large OrderService interface into smaller ones like OrderPlacementService and OrderTrackingService.
+
+D: Dependency Inversion Principle
+    High-level modules should depend on abstractions, not concrete implementations.
+    Example: I used Spring Boot’s dependency injection to inject a NotificationService rather than instantiating it directly.
+
+-------------------------------------------------------------------------------------------------------------------------
 1. What is the Singleton Pattern?
 Definition:
 The Singleton Pattern ensures a class has only one instance and provides a global point of access to it.
