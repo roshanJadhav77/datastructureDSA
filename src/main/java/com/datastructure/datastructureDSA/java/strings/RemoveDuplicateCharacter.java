@@ -1,5 +1,6 @@
 package com.datastructure.datastructureDSA.java.strings;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class RemoveDuplicateCharacter {

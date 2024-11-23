@@ -18,16 +18,17 @@ public class UniqueElement {
 
         map.entrySet()
                 .stream()
-                .filter(e -> e.getValue() > 1)
+                .filter(e -> e.getValue() == 1)
                 .collect(Collectors.toList())
                 .forEach(System.out::println);
 
 
-       /* for(Map.Entry<Character, Integer> value : hm.entrySet()) {
+       /* for(Map.Entry<Character, Integer> value : map.entrySet()) {
             if (value.getValue() == 1) { // == exist element, > print duplicate element
-              //  System.out.print(value.getKey());
-                   System.out.println(value.getKey() +" : "+value.getValue());
-            }*/
+                //  System.out.print(value.getKey());
+                System.out.println(value.getKey() + " : " + value.getValue());
+            }
+        }*/
     }
 }
 
