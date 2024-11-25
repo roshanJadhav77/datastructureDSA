@@ -10,11 +10,10 @@ public class RemoveDuplicateCharacter {
         LinkedHashMap<Character, Integer> hm = new LinkedHashMap<>();
 
         for(char c : chars) {
-            if(hm.containsKey(c)){
-                hm.put(c, hm.get(c));
-            } else
-                hm.put(c, 1);
+            hm.put(c, hm.containsKey(c) ? hm.get(c) : 1);
         }
+
+        System.out.println(hm);
 
         for(Character entry : hm.keySet()){
             System.out.print(entry);

@@ -1,11 +1,13 @@
 package com.datastructure.datastructureDSA.java.strings;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MaxMinOccurrence {
     public static void main(String[] args) {
         String str = "greener";
         maxMinOccurrence(str);
+
     }
 
     public static void maxMinOccurrence(String str) {
@@ -15,7 +17,8 @@ public class MaxMinOccurrence {
 
         // Count occurrences of each character
         for (Character c : chars) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
+           map.put(c, map.getOrDefault(c, 0) + 1);
+          //  map.put(c, map.containsKey(c) ? map.get(c)+1 : 1);
         }
 
         System.out.println("Character frequencies: " + map);
