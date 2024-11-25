@@ -42,7 +42,7 @@
 * [Java program to count characters in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountCharactor.java)
 * [Java program to count words in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountWords.java)
 * [Find First non repeating character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/FindFirstNonRepeatingChar.java)
-* [Find Max and min occurrence of character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/MaxMinOccurance.java)
+* [Find Max and min occurrence of character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/MaxMinOccurrence.java)
 
 
 

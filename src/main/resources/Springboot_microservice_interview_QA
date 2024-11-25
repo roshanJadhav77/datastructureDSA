@@ -104,7 +104,7 @@ Microservices Questions
 11. What are patterns used in microservices?
 Answer:
 
-Saga Pattern: Handles distributed transactions.
+Saga Pattern: Handles distributed transactions. and fall back mechanism
 Circuit Breaker: Prevents cascading failures.
 Bulkhead Pattern: Isolates failures to prevent system-wide crashes.
 

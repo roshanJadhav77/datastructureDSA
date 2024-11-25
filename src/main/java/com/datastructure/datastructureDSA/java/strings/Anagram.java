@@ -20,17 +20,18 @@ public class Anagram {
         str1 = str1.toLowerCase();
         str2 = str2.toLowerCase();
 
+        //2. check the lenth equal or not
         if(str1.length() == str2.length()) {
 
-            //Convert String into char array
+            //2. Convert String into char array
             char[] charArray1 = str1.toCharArray();
             char[] charArray2 = str2.toCharArray();
 
-            //Sort the char array
+            //3. Sort the char array
             Arrays.sort(charArray1);
             Arrays.sort(charArray2);
 
-            //if sorted char are same then string is anagram
+            //4. if sorted char are same then string is anagram
             boolean equals = Arrays.equals(charArray1, charArray2);
 
             if (equals){

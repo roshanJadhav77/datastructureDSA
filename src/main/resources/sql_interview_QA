@@ -1,0 +1,48 @@
+1. How do you write a query to retrieve all records from a table?
+    SELECT * FROM table_name;
+
+2. How do you find unique records in a table?
+    Use the DISTINCT keyword.
+    SELECT DISTINCT column_name FROM table_name;
+
+3. How do you filter records using conditions?
+    Use the WHERE clause.
+    SELECT * FROM payments WHERE amount > 1000;
+
+4. How do you sort records in ascending or descending order?
+    Use the ORDER BY clause.
+    SELECT * FROM payments ORDER BY transaction_date DESC/ASC;
+
+5. How do you count the number of records in a table?
+    Use the COUNT function.
+    SELECT COUNT(*) FROM payments WHERE status = 'SUCCESS';
+
+6. How do you join two tables in SQL?
+    Use JOIN to combine rows from two or more tables based on a related column.
+    SELECT o.order_id, o.customer_id, p.amount, p.payment_method
+    FROM orders o
+    INNER JOIN payments p ON o.order_id = p.order_id;
+
+7. How do you fetch the top N records from a table?
+    Use LIMIT (MySQL/PostgreSQL) or FETCH FIRST (Oracle/DB2).
+    SELECT * FROM payments ORDER BY amount DESC LIMIT 5;
+
+8. How do you group data and calculate aggregates?
+    Use the GROUP BY clause with aggregate functions like SUM, AVG, MAX, MIN.
+    SELECT payment_method, SUM(amount) AS total_amount
+    FROM payments
+    GROUP BY payment_method;
+
+9. How do you filter grouped data?
+    Use the HAVING clause (after GROUP BY) to filter aggregated results.
+    SELECT payment_method, SUM(amount) AS total_amount
+    FROM payments
+    GROUP BY payment_method
+    HAVING SUM(amount) > 10000;
+
+10. How do you update records in a table?
+    Use the UPDATE statement.
+
+
+
+

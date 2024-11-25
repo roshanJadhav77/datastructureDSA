@@ -6,7 +6,7 @@ import java.util.Map;
 public class MaxMinOccurance {
     public static void main(String[] args) {
         String str = "greener";
-       maxMinOccurance(str);
+        maxMinOccurance(str);
 
     }
 
