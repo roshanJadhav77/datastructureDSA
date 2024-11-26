@@ -1,0 +1,134 @@
+1. What is Apache Kafka, and why is it used?
+Answer:
+    Apache Kafka is a distributed event streaming platform used for building real-time data pipelines and streaming applications.
+
+    Use Cases:
+        *Real-time event processing.
+        *Decoupling services in microservices architecture.
+        *Building scalable and fault-tolerant systems.
+
+2. What are the main components of Kafka?
+Answer:
+    Producer: Publishes messages to a topic.
+    Consumer: Subscribes to a topic to read messages.
+    Topic: A category to which messages are sent by producers and read by consumers.
+    Broker: A Kafka server that stores and distributes data.
+    Zookeeper: Used for managing cluster metadata (deprecated in favor of Kafka Raft).
+    Partition: Subdivides a topic for scalability.
+
+3. What is a Kafka topic, and how are messages stored in it?
+Answer:
+    A Kafka topic is a logical category where messages are published.
+    Each topic is divided into partitions for parallelism.
+    Messages in a partition are ordered and stored with offsets.
+
+    Example:
+    In a payment system, a topic like payment-events can store events such as PaymentInitiated, PaymentSuccess, and PaymentFailed.
+
+4. How does Kafka achieve fault tolerance?
+Answer:
+    * Kafka achieves fault tolerance using replication.
+    * Each partition has multiple replicas across brokers.
+    * If a broker fails, a replica can take over as the leader for the partition.
+
+5. How does Kafka ensure message durability?
+Answer:
+    * Replication: Messages are replicated across brokers.
+    * Commit Log: Messages are persisted to disk.
+    * Acknowledgments: Producers receive acknowledgment based on acks configuration.
+
+    Example:
+    In a payment system, you can configure acks=all to ensure a message is acknowledged only when all replicas have received it.
+
+6. What is the role of partitions in Kafka?
+Answer:
+    * Partitions divide a topic for parallel processing.
+    * Each partition has an independent offset sequence.
+    * They allow Kafka to scale horizontally by distributing partitions across brokers.
+
+7. How do Kafka producers work?
+Answer:
+    Kafka producers publish messages to a topic and partition.
+        Partition selection can be customized using a partitioner.
+        Producers can configure acknowledgment strategies using the acks parameter:
+            acks=0: No acknowledgment.
+            acks=1: Acknowledgment from the leader.
+            acks=all: Acknowledgment from all replicas.
+
+    example:
+
+    Properties props = new Properties();
+    props.put("bootstrap.servers", "localhost:9092");
+    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    props.put("acks", "all");
+
+    Producer<String, String> producer = new KafkaProducer<>(props);
+    producer.send(new ProducerRecord<>("payment-events", "PaymentSuccess", "Order123"));
+    producer.close();
+
+8. How do Kafka consumers work?
+    Kafka consumers subscribe to topics and poll for messages.
+        Each consumer belongs to a consumer group, and partitions are distributed among the group members.
+        If a consumer crashes, partitions are reassigned to other consumers in the group.
+
+    example:
+    Properties props = new Properties();
+    props.put("bootstrap.servers", "localhost:9092");
+    props.put("group.id", "payment-group");
+    props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+    KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+    consumer.subscribe(Collections.singletonList("payment-events"));
+
+    while (true) {
+        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+        for (ConsumerRecord<String, String> record : records) {
+            System.out.println("Received: " + record.value());
+        }
+    }
+
+11. How do you achieve exactly-once delivery in Kafka?
+Answer:
+    Enable idempotent producers by setting enable.idempotence=true.
+    Use Kafka Streams or transactions for atomic writes.
+
+    example:
+    props.put("enable.idempotence", "true");
+
+13. What is Kafka Streams, and how is it different from Kafka?
+Answer:
+    * Kafka Streams is a library for real-time stream processing.
+    * It processes data from Kafka topics and outputs results to other topics or systems.
+
+14. What is the role of ZooKeeper in Kafka?
+Answer:
+    ZooKeeper manages metadata like:
+        Broker information.
+        Partition leader election.
+        Consumer group coordination.
+
+    Since Kafka 2.8, ZooKeeper is being replaced with Kafka Raft (KRaft) for metadata management.
+
+15. How do you handle backpressure in Kafka consumers?
+Answer:
+    Use pause() and resume() to control the flow of messages.
+    Use a custom thread pool to process messages efficiently.
+
+    example:
+    if (processingLag > threshold) {
+        consumer.pause(Collections.singletonList(new TopicPartition("payment-events", 0)));
+    }
+
+16. How does Kafka handle message ordering?
+    * Messages are ordered within a partition but not across partitions.
+    * Use the same key to ensure all related messages go to the same partition.
+
+
+17. What is Kafka Connect?
+    Kafka Connect is a tool for integrating Kafka with external systems like databases and storage.
+
+        Source connectors: Import data into Kafka.
+        Sink connectors: Export data from Kafka.
+
