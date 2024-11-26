@@ -43,6 +43,7 @@
 * [Java program to count characters in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountCharactor.java)
 * [Java program to count words in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountWords.java)
 * [Find First non repeating character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/FindFirstNonRepeatingChar.java)
+* [Repeated words in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/CountRepeatedWords.java)
 * [Find Max and min occurrence of character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/MaxMinOccurrence.java)
 
 
@@ -67,6 +68,7 @@
 * [Sort in descending order ](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/SortDescending.java)
 * [Print number which starts with 3](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/StartWith.java)
 * [Find First non repeating character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/FindFirstNonRepeatingChar.java)
+* [Repeated words in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/CountRepeatedWords.java)
 
 
 ### numbers
