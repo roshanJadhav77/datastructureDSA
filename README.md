@@ -16,6 +16,7 @@
 
 ### Array :
 * [Highest occurrence of element in array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/HighestOccurance.java)
+* [Intersection Two array](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/array/IntersectionTwoArray.java)
 * [Find two largest element of array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/FindLargestTwo.java)
 * [Find Largest and Smallest element of an array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/LastestSmalest.java)
 * [Find missing element of a array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/MissingElement.java)
@@ -36,7 +37,7 @@
 * [Anagram](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/Anagram.java)
 * [Palindrome](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/Palidrome.java)
 * [FizzBuzz](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/FizzBuzz.java)
-* [Fibonacci](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/Fibonacci.java)
+* [Fibonacci Using Recursion](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/strings/FibonacciUsingRecurssion.java)
 * [Factorial](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/Factorial.java)
 * [Java program to count the characters in each word in a given sentence](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountCharacterInEachWords.java)
 * [Java program to count characters in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/CountCharactor.java)
@@ -72,6 +73,7 @@
 * [Print Largest number](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/number/Largest.java)
 * [Print prime number from 1 to 100](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/PrimeNumber.java)
 * [Swap numbers without using 3rd variable / with using 3rd variable](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/SwappingTwoVariables.java)
+* [Intersection of Two Array](https://github.com/roshanJadhav77/datastructureDSA/blob/dev/src/main/java/com/datastructure/datastructureDSA/java/array/IntersectionTwoArray.java)
 
 
 ### Exception
@@ -81,3 +83,4 @@
 ### Interview
 * [First Non Repeating character from String](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/interview/coforge/FirstNonRepeatingChar.java)
 * [Shift Zeros from an given array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/interview/coforge/ShiftZeros.java)
+* [Intersection of Two Array](https://github.com/roshanJadhav77/datastructureDSA/blob/dev/src/main/java/com/datastructure/datastructureDSA/java/array/IntersectionTwoArray.java)
