@@ -1,4 +1,42 @@
-Spring Boot Questions
+Spring Boot Questions:
+
+Asked in interview:
+1. what is fallback method in microservice?
+    Definition:
+    A fallback method in a microservices architecture is a predefined mechanism that provides an alternative response or
+    action when a service call fails or becomes unavailable due to issues such as timeouts, exceptions, or network failures.
+
+    Fallback methods are part of resiliency patterns that ensure a microservices system remains functional and provides
+    a degraded but meaningful user experience during failures.
+
+    Spring Cloud Resilience4j (Recommended Post-Hystrix)
+    Using Resilience4j, which is the modern replacement for Hystrix, you can implement fallback methods.
+    example:
+    @RestController
+    public class PaymentController {
+
+        @GetMapping("/processPayment")
+        @Retry(name = "paymentService", fallbackMethod = "fallbackProcessPayment")
+        public String processPayment() {
+            // Simulated failure
+            if (Math.random() > 0.5) {
+                throw new RuntimeException("Payment gateway not responding");
+            }
+            return "Payment processed successfully";
+        }
+
+        // Fallback method
+        public String fallbackProcessPayment(Exception e) {
+            return "Payment service is unavailable. Please try again later.";
+        }
+    }
+------------------------------------------------------------------------------------------------------------------------
+2. what is dirty check in Hibernate?
+    Definition:
+    Dirty checking is a mechanism in Hibernate that automatically detects changes made to persistent objects and updates
+    the database accordingly during a transaction commit, without requiring explicit update() calls from the developer.
+
+------------------------------------------------------------------------------------------------------------------------
 
 1. What is Spring Boot, and why is it used?
 Answer:
