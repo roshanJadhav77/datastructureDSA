@@ -9,8 +9,8 @@ Asked Interview QA
        up to 10 elements.
 
     2. Insertion of 11th Element:
-       When you attempt to add the 11th element, the ArrayList detects that its current capacity is insufficient. It will:
-
+       When you attempt to add the 11th element, the ArrayList detects that its current capacity is insufficient.
+       It will:
         * Create a new array with a larger capacity (typically 1.5 times the current capacity, depending on the implementation).
         * Copy the existing elements to the new array.
         * Add the 11th element to the new array.

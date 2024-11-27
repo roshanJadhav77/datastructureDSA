@@ -1,3 +1,17 @@
+Asked Question in Interview:
+1. Diff b/w Delete and Truncate ?
+    The DELETE and TRUNCATE commands in SQL are used to remove data from a table, but they differ significantly in terms
+    of functionality, performance, and use cases.
+
+    Key Differences Between DELETE and TRUNCATE
+    Feature	            DELETE	                                                TRUNCATE
+    Purpose	            Removes specific rows or all rows from a table.	        Removes all rows from a table.
+    Filter Condition	Supports WHERE clause to filter rows.	                Does not support WHERE; deletes all rows.
+    Transaction
+    Control	            Can be rolled back.	                                    Can’t rollback in some databases.
+    Performance	        Slower, as it logs each row deletion individually.	    Faster, as it deallocates the data pages.
+
+
 1. How do you write a query to retrieve all records from a table?
     SELECT * FROM table_name;
 
