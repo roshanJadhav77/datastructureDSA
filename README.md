@@ -30,6 +30,7 @@
 
 ### Strings :
 * [Print unique element / Count occurrence of elements / Remove duplicates elements](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/UniqueElement.java)
+* [Count occurrence of words in String](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/CountOccuranceOfWords.java)
 * [Remove duplicate character in string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/RemoveDuplicateCharacter.java)
 * [Display only Vowels in given strings ](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/StringContainVowels.java)
 * [Reverse string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/ReverseStringWithoutBuild.java)
