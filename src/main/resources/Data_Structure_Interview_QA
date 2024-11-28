@@ -1,0 +1,84 @@
+Asked Interview QA
+1. What will happen if you declare size of ArrayList as 10 and you insert 11 element in it?
+    When you declare the size of an ArrayList as 10 and insert the 11th element, the ArrayList will automatically resize
+    itself to accommodate the additional element.
+
+    How It Works Internally:
+    1. Initial Capacity:
+       When you create an ArrayList with a capacity of 10, the internal array used by the ArrayList is initialized to hold
+       up to 10 elements.
+
+    2. Insertion of 11th Element:
+       When you attempt to add the 11th element, the ArrayList detects that its current capacity is insufficient.
+       It will:
+        * Create a new array with a larger capacity (typically 1.5 times the current capacity, depending on the implementation).
+        * Copy the existing elements to the new array.
+        * Add the 11th element to the new array.
+
+    3. Result:
+    The 11th element is successfully added, and the internal array now has a larger capacity to accommodate more
+    elements in the future.
+
+    example:
+    public class ArrayListExample {
+        public static void main(String[] args) {
+            ArrayList<Integer> list = new ArrayList<>(10);
+
+            // Add 11 elements
+            for (int i = 1; i <= 11; i++) {
+                list.add(i);
+            }
+
+            System.out.println("ArrayList: " + list);
+            System.out.println("Size: " + list.size());
+        }
+    }
+
+    output:
+
+    ArrayList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    Size: 11
+
+2. Explain Internal working on Hashmap?
+3. Explain Internal working of ConcurrentHashMap?
+
+4. String, StringBuilder, and StringBuffer: Overview
+
+    Aspect	        String	                        StringBuilder	                    StringBuffer
+
+    Mutability	    Immutable	                    Mutable	                            Mutable
+    Thread Safety	Not thread-safe	                Not thread-safe	                    Thread-safe
+    Performance	    Slower for frequent             Faster                              Slower
+                    modifications	                (no synchronization overhead)	    (synchronization adds overhead)
+    Usage Scenario	For fixed or rarely modified    For fast,                           For thread-safe,
+                        data                        single-threaded operations          multi-threaded use
+
+    Which One to Use?
+    Use String: For immutable and frequently read-only data (e.g., constants, keys, or small modifications).
+    Use StringBuilder: For high-performance string manipulation in single-threaded applications.
+    Use StringBuffer: When working with strings in multi-threaded environments where thread safety is required.
+
+5. How will you handle Immutable class contains mutable object?
+    Steps to Handle Immutable Classes with Mutable Objects
+
+    1. Make the Class Final: public final class ImmutableClass { }
+    2. Make Fields Private and Final: private final String name; // Mutable object
+    3. Avoid Providing Setters:
+    4. Use Defensive Copying: When initializing a mutable field or returning it, use a defensive copy to prevent outside modifications.
+    5. Provide Only Getters for Fields:
+
+
+
+
+6. What is list and map and which scenario which can be used?
+
+    Aspect	                    List	                                Map
+
+    Definition	    An ordered collection of elements               A collection of key-value pairs
+                    (duplicates allowed).	                        (no duplicate keys).
+    Ordering	    Maintains the order of insertion.	            No guaranteed ordering .
+                                                                    (depending on the implementation)
+    Key Feature	    Access elements by index.	                    Access values by keys.
+    Duplicates	    Allows duplicate elements.	                    Keys are unique; values can be duplicated.
+
+

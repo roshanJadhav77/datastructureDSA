@@ -1,5 +1,379 @@
-Spring Boot Questions
+Spring Boot Questions:
 
+Asked in interview:
+1. what is fallback method in microservice?
+    Definition:
+    A fallback method in a microservices architecture is a predefined mechanism that provides an alternative response or
+    action when a service call fails or becomes unavailable due to issues such as timeouts, exceptions, or network failures.
+
+    Fallback methods are part of resiliency patterns that ensure a microservices system remains functional and provides
+    a degraded but meaningful user experience during failures.
+
+    Spring Cloud Resilience4j (Recommended Post-Hystrix)
+    Using Resilience4j, which is the modern replacement for Hystrix, you can implement fallback methods.
+    example:
+    @RestController
+    public class PaymentController {
+
+        @GetMapping("/processPayment")
+        @Retry(name = "paymentService", fallbackMethod = "fallbackProcessPayment")
+        public String processPayment() {
+            // Simulated failure
+            if (Math.random() > 0.5) {
+                throw new RuntimeException("Payment gateway not responding");
+            }
+            return "Payment processed successfully";
+        }
+
+        // Fallback method
+        public String fallbackProcessPayment(Exception e) {
+            return "Payment service is unavailable. Please try again later.";
+        }
+    }
+------------------------------------------------------------------------------------------------------------------------
+2. what is dirty check in Hibernate?
+    Definition:
+    Dirty checking is a mechanism in Hibernate that automatically detects changes made to persistent objects and updates
+    the database accordingly during a transaction commit, without requiring explicit update() calls from the developer.
+
+------------------------------------------------------------------------------------------------------------------------
+3. Create Rest Service and add Authentication to it?
+    o implement a REST service with OAuth 2.0 authentication, we can use Spring Boot with Spring Security and integrate
+    with an in-memory or external authorization server.
+
+    Steps to Implement:
+    1. Set Up the Spring Boot Application: Add dependencies for Spring Security and OAuth2.
+    2. Authorization Server Configuration: Use Spring Boot to act as an OAuth2 Authorization Server.
+    3. Protect REST Endpoints: Secure APIs using OAuth2.
+    4. Test the Application: Use tools like Postman or curl to request a token and access secured endpoints.
+
+    1. pom.xml
+        <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>1.1.1</version>
+        </dependency>
+
+    2. Authorization Server Configuration
+    The application will act as an OAuth 2.0 Authorization Server.
+
+    @Configuration
+    public class AuthorizationServerConfig {
+
+        @Bean
+        public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+            OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+            return http.formLogin().and().build();
+        }
+    }
+
+    3. Security Configuration:
+
+    @Configuration
+    public class SecurityConfig {
+
+        @Bean
+        public InMemoryUserDetailsManager userDetailsManager() {
+            return new InMemoryUserDetailsManager(
+                User.withUsername("client")
+                    .password(passwordEncoder().encode("secret"))
+                    .roles("USER")
+                    .build()
+            );
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+        @Bean
+        public void configureClients(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication()
+                .withUser("client")
+                .password(passwordEncoder().encode("secret"))
+                .roles("CLIENT");
+        }
+    }
+
+    4. Protect the REST API
+    @Configuration
+    @EnableResourceServer
+    public class ResourceServerConfig {
+
+        @Bean
+        public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .antMatchers("/secure/**").authenticated()
+                .and()
+                .oauth2ResourceServer()
+                .jwt(); // Use JWT tokens for OAuth2
+            return http.build();
+        }
+    }
+
+    5. REST Controller
+
+    @RestController
+    @RequestMapping("/api")
+    public class MyRestController {
+
+        @GetMapping("/public")
+        public String publicEndpoint() {
+            return "This is a public endpoint!";
+        }
+
+        @GetMapping("/secure")
+        public String secureEndpoint() {
+            return "This is a secure endpoint, accessible only with a valid token!";
+        }
+    }
+
+   How It Works:
+    Public Endpoint: /api/public - Accessible without authentication.
+    Secure Endpoint: /api/secure - Requires a valid OAuth2 token.
+    Authorization Server:
+    Client requests a token by providing credentials (e.g., client/secret).
+    Server issues a JWT token upon successful authentication.
+    Resource Server:
+    Validates the token before granting access to protected resources.
+
+------------------------------------------------------------------------------------------------------------------------
+How do you est database connection in your application
+    In my payment domain project, we used JPA (Java Persistence API) as the ORM tool to interact with the database.
+    The database connection was established and managed through Spring Data JPA, which simplifies database operations
+    and abstracts much of the boilerplate code. Here’s how the connection was set up and utilized:
+
+    1. Database Configuration:
+        The connection to the database was defined in the application.properties (or application.yml) file of the
+        Spring Boot application. For example:
+
+        # Database Connection Properties
+        spring.datasource.url=jdbc:mysql://localhost:3306/paymentdb
+        spring.datasource.username=payment_user
+        spring.datasource.password=secure_password
+        spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+        # JPA Hibernate Configuration
+        spring.jpa.hibernate.ddl-auto=update
+        spring.jpa.show-sql=true
+        spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+    2. JPA Integration:
+        JPA provided an abstraction over JDBC. Entities were mapped to database tables using annotations like @Entity,
+        and Spring Data JPA repositories were used to perform CRUD operations
+
+        @Entity
+        public class PaymentTransaction {
+            @Id
+            @GeneratedValue
+            private Long id;
+            private String transactionId;
+            private Double amount;
+            private String status;
+        }
+
+        public interface PaymentTransactionRepository extends JpaRepository<PaymentTransaction, Long> {
+            // Custom queries can be defined here if needed
+        }
+
+------------------------------------------------------------------------------------------------------------------------
+Counter Question : What if there is a failure while interacting with the database? How do you handle it?
+    1. Spring Transactions: We use the @Transactional annotation to ensure atomicity. If any part of the transaction fails,
+       the entire operation is rolled back automatically.
+    2. Custom Exception Handling: We handle database-specific exceptions like DataIntegrityViolationException or
+       ConstraintViolationException and map them to appropriate application-level exceptions.
+    3. Retries: In critical operations (e.g., payments), we implemented retry mechanisms using tools like Resilience4j
+       or Spring Retry to handle transient database failures.
+
+------------------------------------------------------------------------------------------------------------------------
+Counter Question : How do you handle database schema changes in JPA?
+    we used Hibernate’s spring.jpa.hibernate.ddl-auto property set to update for automatic schema updates.
+
+------------------------------------------------------------------------------------------------------------------------
+Explain dependency Injection with example?
+
+    Key Concepts of Dependency Injection
+        Dependency: An object on which another object depends.
+        Injection: Supplying a dependency object to a dependent object.
+        Inversion of Control (IoC): The control of object creation and lifecycle is transferred to a container.
+
+    Types of Dependency Injection
+        1. Constructor Injection: Dependencies are provided through the class constructor.
+        2. Setter Injection: Dependencies are provided through public setter methods.
+        3. Field Injection: Dependencies are injected directly into fields using annotations (like @Autowired in Spring).
+
+    Without Dependency Injection:
+        Public class PaymentService {
+            private NotificationService notificationService;
+
+            public PaymentService() {
+                // Tightly coupled
+                this.notificationService = new NotificationService();
+            }
+
+            public void processPayment() {
+                System.out.println("Processing payment...");
+                notificationService.sendNotification("Payment successful!");
+            }
+        }
+
+        class NotificationService {
+            public void sendNotification(String message) {
+                System.out.println("Notification: " + message);
+            }
+        }
+
+    With Dependency Injection:
+        public class PaymentService {
+            private NotificationService notificationService;
+
+            // Dependency injected via constructor
+            public PaymentService(NotificationService notificationService) {
+                this.notificationService = notificationService;
+            }
+        }
+
+    Dependency Injection in Spring Framework:
+    Using @Autowired (Field Injection)
+
+    @Service
+    public class PaymentService {
+
+        @Autowired
+        private NotificationService notificationService;
+
+        public void processPayment() {
+            System.out.println("Processing payment...");
+            notificationService.sendNotification("Payment successful!");
+        }
+    }
+
+    Note: Constructor Injection is better
+        Advantages:
+        Mandatory dependencies: Ensures all required dependencies are provided when the object is created.
+        Immutability: Encourages immutability as dependencies are final (can be declared as final).
+        Testability: Great for unit testing as dependencies can be injected easily.
+        Explicit contract: Makes dependencies visible in the constructor, improving code readability.
+
+
+   Final Suggestion
+   * Use Constructor Injection for clean, testable, and maintainable code.
+   * If using Spring Framework, field injection with @Autowired can be quick,
+   but it’s better to stick to constructor injection for larger projects to ensure clarity and immutability.
+
+------------------------------------------------------------------------------------------------------------------------
+How do you handle Exception in your project? what if an unknow error comes then how you handle it? what find of status
+code you show to client?
+answer:
+
+    In my project, we use Spring Boot's Exception Handling mechanism to handle exceptions systematically and return
+    meaningful responses to the client. Here's how:
+
+    1. Global Exception Handling:
+    We use @ControllerAdvice and @ExceptionHandler to manage exceptions centrally, ensuring a consistent response format.
+
+    2. Custom Exceptions:
+    For business logic, we define custom exceptions like PaymentNotFoundException or InvalidTransactionException,
+    making error handling specific and clear.
+
+    3. Unknown Errors:
+    For unexpected exceptions, we handle them with a generic Exception handler in the global exception class.
+
+    example:
+        @ControllerAdvice
+        public class GlobalExceptionHandler {
+
+            @ExceptionHandler(PaymentNotFoundException.class)
+            public ResponseEntity<String> handlePaymentNotFound(PaymentNotFoundException ex) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND); // 404
+            }
+
+            @ExceptionHandler(Exception.class)
+            public ResponseEntity<String> handleGenericException(Exception ex) {
+                return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR); // 500
+            }
+        }
+
+Status Codes Returned to Client:
+400 (Bad Request): For validation errors or incorrect input.
+404 (Not Found): For resources not found (e.g., invalid payment ID).
+500 (Internal Server Error): For unknown errors or system failures.
+401 (Unauthorized): If authentication fails.
+403 (Forbidden): If the user is not allowed to access the resource
+
+Counter Question: What If an Unknown Error Occurs?
+   1.  We log the error using a logging framework like Logback or SLF4J for debugging and diagnostics.
+   2.  Return a 500 Internal Server Error to the client with a user-friendly message:
+    "Something went wrong. Please try again later."
+
+------------------------------------------------------------------------------------------------------------------------
+How will you configure your server to server for more request?
+    Using Load balance like Nginx
+
+------------------------------------------------------------------------------------------------------------------------
+Suppose you have service performing transaction and another service which is checking balance, how you will handle this?
+in what and all you can handle?
+answer:
+    Ways to Handle the Scenario
+    1. Use same Database Transactions:
+       If both services access the same database:
+
+       Wrap transactional operations (debits/credits) in a database transaction to ensure atomicity.
+       Use isolation levels (e.g., READ COMMITTED or REPEATABLE READ) to prevent dirty reads and ensure consistent balance checks.
+
+    2. Use Distributed Transactions:
+        Saga Pattern: Break the transaction into smaller steps managed by a coordinator.
+        E.g., Debit account → Record transaction → Check balance.
+        Pros: Ensures consistency across services. Cons: Complex to implement and manage.
+
+    3. Event-Driven Architecture:
+        Use an event-driven approach with a message broker (e.g., Kafka).
+        The transaction service publishes an event (e.g., TransactionCompleted) after completing a transaction.
+        The balance service listens to these events and updates a read-optimized cache for quick balance checks.
+
+------------------------------------------------------------------------------------------------------------------------
+How do you test Rest API, which has Authentication?
+    Use Postman to test authentication by setting up Basic Auth or Bearer Token in the Authorization tab.
+
+------------------------------------------------------------------------------------------------------------------------
+Explain @MediaType ?
+    @MediaType is an annotation used in JAX-RS (Java API for RESTful Web Services) to define the media type (MIME type)
+    of the request or response. It helps specify the format in which the data is sent or received,
+    such as application/json, application/xml, text/plain, etc.
+
+    Key Points:
+    Used for: Defining the content type for request or response in REST APIs.
+    Commonly used in:
+    @Produces: Specifies the media types that a method can return.
+    @Consumes: Specifies the media types that a method can consume.
+
+    @Path("/user")
+    public class UserService {
+
+        @GET
+        @Path("/info")
+        @Produces(MediaType.APPLICATION_JSON) // Response will be in JSON format
+        public User getUserInfo() {
+            return new User("John", "Doe");
+        }
+
+        @POST
+        @Consumes(MediaType.APPLICATION_JSON) // Accepts JSON data in request body
+        public Response createUser(User user) {
+            // Process user creation
+            return Response.status(201).build();
+        }
+    }
+
+
+
+------------------------------------------------------------------------------------------------------------------------
 1. What is Spring Boot, and why is it used?
 Answer:
 Spring Boot simplifies the development of Spring-based applications by providing:
