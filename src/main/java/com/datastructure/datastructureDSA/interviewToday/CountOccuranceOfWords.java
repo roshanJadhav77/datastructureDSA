@@ -2,7 +2,7 @@ package com.datastructure.datastructureDSA.interviewToday;
 
 import java.util.LinkedHashMap;
 
-public class ListDemo {
+public class CountOccuranceOfWords {
     public static void main(String[] args) {
 
         String str = "Roshan, Ganesh, Roshan, Bangalore, karnataka";
