@@ -15,7 +15,7 @@
 * [Docker, Kafka, and Azure DevOps - Interview Questions and Answers](https://github.com/roshanJadhav77/datastructureDSA/blob/string-coding/src/main/resources/interview%20QA%20on%20Docker%2C%20azure)
 
 ### Array :
-* [Highest occurrence of element in array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/HighestOccurance.java)
+* [Highest occurrence of element in array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/UsingHashMap.java)
 * [Intersection Two array](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/array/IntersectionTwoArray.java)
 * [Find two largest element of array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/FindLargestTwo.java)
 * [Find Largest and Smallest element of an array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/array/LastestSmalest.java)
