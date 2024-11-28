@@ -1,66 +1,366 @@
 
 ### Java
+Asked question:
+What is cloning and why do we need cloning ?
+    Cloning in Java refers to creating an exact copy of an object. It is typically done using the clone() method defined
+    in the Object class. Cloning creates a new object that is a copy of the original, with the same field values but a
+    separate memory reference.
+
+    Types of Cloning:
+    1. Shallow Cloning: Only the reference to the objects is copied; the original and the clone share the same
+       mutable objects. Achieved using the clone() method of Object.
+    2. Deep Cloning: Creates a new object and also recursively copies the objects that the original references.
+       Requires custom implementation or external libraries.
+
+    Why Do We Need Cloning?
+    1. Create Copies of Objects:
+    2. Avoid Side Effects:
+    3. Performance Optimization:
+    4. Prototype Design Pattern:
+
+    example:
+    class Person implements Cloneable {
+        String name;
+        int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        protected Object clone() throws CloneNotSupportedException {
+            return super.clone(); // Shallow copy
+        }
+
+        @Override
+            protected Object clone() throws CloneNotSupportedException {
+                Person cloned = (Person) super.clone();
+                cloned.address = new Address(this.address.city); // Deep copy of Address
+                return cloned;
+        }
+    }
+
+
+Most asked tricky and counter / cross  question on Oops in java
+1. What is the difference between an abstract class and an interface?
+    Abstract Class	                                                Interface
+    Can have both abstract and concrete methods.	        Only abstract methods (before Java 8).
+    Supports constructors.	                                Does not support constructors.
+    Allows protected, private, and public methods.	        Methods are public by default.
+    Supports state with instance variables.	                No state allowed (except constants).
+
+1.1 When would you use an abstract class over an interface?
+    * Use an abstract class when you need to share state or common code among subclasses
+    * Use an interface for pure abstraction or to achieve multiple inheritance.
+
+1.1 How do default methods in interfaces (Java 8+) change this distinction?
+    Default methods allow interfaces to have some concrete behavior, narrowing the gap between abstract classes and interfaces.
+
+2. Can you override a private or static method in Java?
+    * Private methods: Cannot be overridden because they are not visible to the subclass.
+    * Static methods: Cannot be overridden; they are hidden instead (method hiding).
+
+3. Why do we need to override both equals() and hashCode()?
+    Collections like HashMap and HashSet use hashCode() to locate buckets, and equals() to compare objects within the bucket.
+
+4. What is the difference between == and equals()?
+    ==: Compares object references.
+    equals(): Compares the content/values of objects if overridden.
+
+4.1  Can two objects be equal but have different hash codes?
+    No, as per Java's contract, if two objects are equal (equals()), they must have the same hash code.
+
+5. Can you explain the difference between compile-time and runtime polymorphism?
+    Compile-time Polymorphism: Achieved through method overloading. The method to call is determined at compile-time.
+    Runtime Polymorphism: Achieved through method overriding. The method to call is determined at runtime using dynamic dispatch.
+
+5.1 Can you overload a method by changing only the return type?
+    No, because method signature in Java does not include the return type.
+
+6. What is the purpose of the final keyword in Java?
+    Final Class: Cannot be subclassed (e.g., String class).
+    Final Method: Cannot be overridden in a subclass.
+    Final Variable: Its value cannot be changed once assigned.
+
+6.1 Can we initialize a final variable inside a constructor?
+    Yes, a blank final variable can be initialized in the constructor.
+
+6.2 Why can’t a final method be overridden?
+    To ensure its implementation remains unchanged in subclasses.
+
+7.  What is the difference between abstraction and encapsulation?
+    Abstraction	                                                 Encapsulation
+    Hides implementation details.	                    Hides object state through access modifiers.
+    Achieved using abstract classes or interfaces.	    Achieved using private fields and public getters/setters.
+    Focuses on what an object does.	                    Focuses on how data is protected.
+
+7.1 Can you achieve abstraction without encapsulation?
+    Yes, abstraction can be achieved independently using interfaces or abstract classes without necessarily
+    encapsulating data.
+
+8. How is memory allocated for objects in Java?
+    Heap Memory: For objects and instance variables.
+    Stack Memory: For local variables and method calls.
+    Method Area: For class metadata and static variables.
+
+8.1 What happens if an object has no references?
+    It becomes eligible for garbage collection.gc
+
+9 Explain super and this keywords in Java.
+    this: Refers to the current object.
+    super: Refers to the parent class’s object or methods.
+
+9.1 Can you call both this() and super() in a constructor?
+    No, because both must be the first statement in the constructor.
+
+9.2 Why use super?
+    To call a parent class constructor or override methods explicitly.
+
+10. What is an immutable class?
+    An immutable class is one whose state cannot be changed after creation. For example, String.
+
+    Steps to Create an Immutable Class:
+    1. Declare the class as final.
+    2. Make fields private and final.
+    3. Provide no setters.
+    4. Use defensive copies for mutable fields.
+
+10.1 Why is immutability important?
+    Immutability ensures thread safety, simplifies caching, and avoids unintended side effects.
+
+11. Can a class be both abstract and final?
+    No, because final prevents inheritance, while abstract requires a subclass for implementation.
+
+12. What is method hiding?
+    When a subclass defines a static method with the same name as a static method in the parent class,
+    it hides the parent class’s method instead of overriding it.
+
+12.1 Why can’t static methods be overridden?
+    Static methods belong to the class, not instances, so polymorphism does not apply.
+
+13. Can we override a default method in an interface?
+    Yes, a class implementing the interface can override a default method.
+
+13.1. What happens if two interfaces have conflicting default methods?
+    The implementing class must override the method explicitly to resolve the conflict.
+
+14. What is the difference between overloading and overriding?
+
+    Overloading	                                                Overriding
+    Happens in the same class.	                                Happens in a subclass.
+    Involves methods with the same name but                     Method signature must remain the same.
+    different parameter lists.
+    Resolved at compile-time (static binding).	                Resolved at runtime (dynamic binding).
+
+14.1 Can you overload static methods?
+    Yes, static methods can be overloaded.
+
+
+Collections
+Q1. What is the difference between HashMap and ConcurrentHashMap?
+
+    HashMap	                                                ConcurrentHashMap
+    Not thread-safe.	                                    Thread-safe (uses locks for synchronization).
+    Allows one null key and multiple null values.	        Does not allow null keys or values.
+    Better for single-threaded environments.	            Ideal for concurrent environments.
+
+Q1.1 How does ConcurrentHashMap achieve thread safety without locking the entire map?
+    It uses segment-level locking (in Java 7) or bucket-level locking (Java 8+ with CAS operations).
+
+Q2. What is the difference between ArrayList and LinkedList?
+    ArrayList	                                    LinkedList
+    Backed by a dynamic array.	                    Backed by a doubly linked list.
+    Faster for random access (O(1)).	            Slower for random access (O(n)).
+    Slower for insertion/deletion in the middle.	Faster for insertion/deletion.
+
+Q2.1 Which would you use for implementing a queue?
+    LinkedList, as it allows faster insertions and deletions at both ends.
+
+Q3. Can a HashSet contain duplicate elements?
+    No, HashSet uses a HashMap internally and relies on the equals() and hashCode() methods to ensure uniqueness.
+
+Q3.1 What happens if you override equals() but not hashCode()?
+    It can break the contract of HashSet, causing unexpected behavior, as objects with equal equals() might be placed
+    in different buckets.
+
+Q4. What is the difference between fail-fast and fail-safe iterators?
+    Fail-Fast	                                                Fail-Safe
+    Throws ConcurrentModificationException on modification.	    Does not throw any exception.
+    Works directly on the collection.	                        Works on a copy of the collection.
+
+Q4.1 Name an example of a fail-safe iterator.
+    CopyOnWriteArrayList and ConcurrentHashMap.
+
+Q5. Why is HashMap not thread-safe?
+    Multiple threads can modify the map simultaneously, leading to data inconsistency or infinite loops during rehashing.
+
+Q5.1 How would you make HashMap thread-safe?
+    Use Collections.synchronizedMap() or switch to ConcurrentHashMap.
+
+Exceptions
+Q6. What is the difference between throw and throws?
+    throw	                                        throws
+    Used to explicitly throw an exception.	    Declares the exceptions a method can throw.
+    Used in Method body                         Used in method signature
+    can throw only one exception                can throw multiple exception
+    propagate only checked exception            propagate unchecked exception
+    Example: throw new IOException();	        Example: void read() throws IOException;
+
+Q6.1 Can you declare a throws clause for a runtime exception?
+     Yes, but it is optional since runtime exceptions are unchecked.
+
+Q7. What happens if an exception occurs in a finally block?
+    If an exception is thrown in finally, it will override any exception from the try or catch block.
+
+Q7.1 Can finally block prevent the execution of catch?
+     No, the catch block executes before the finally.
+
+Q8. How do you create a custom exception in Java?
+    Extend the Exception or RuntimeException class.
+
+    public class CustomException extends Exception {
+        public CustomException(String message) {
+            super(message);
+        }
+    }
+
+Q8.1 Why would you create a custom exception?
+    To handle application-specific errors or provide more meaningful messages.
+
+Q9. What is the difference between checked and unchecked exceptions?
+    Checked Exceptions	                                Unchecked Exceptions
+    Must be handled or declared using throws.	        Do not require handling or declaration.
+    Example: IOException.	                            Example: NullPointerException.
+
+Q9.1 Why are runtime exceptions not checked at compile-time?
+     Because they often indicate programming errors (e.g., null references) that should be fixed, not caught.
+
+Q10. Can we have multiple catch blocks for the same exception?
+     No, duplicate catch blocks are not allowed.
+
+Multithreading
+Q11. What is the difference between synchronized and volatile?
+     Synchronized	                                                Volatile
+     Ensures thread safety by allowing one thread at a time.	    Ensures visibility of changes across threads.
+     Prevents thread interference and memory consistency issues.	Does not provide atomicity.
+
+Q11.1 Can volatile replace synchronized?
+      No, because volatile only ensures visibility, not atomicity or thread safety.
+
+Q12. What is the difference between Callable and Runnable?
+    Runnable	                                Callable
+    Returns void.	                            Returns a result via Future.
+    Cannot throw checked exceptions.	        Can throw checked exceptions.
+
+Q12.1 Which would you use if you need a return value?
+      Use Callable.
+
+Q13. What is the purpose of the join() method in threads?
+    join() makes the current thread wait until the thread it is called on finishes execution.
+
+Q13.1 What happens if you call join() on the same thread?
+    It will throw IllegalThreadStateException.
+
+Q14. What is the difference between start() and run() in threads?
+     start()	                                                run()
+     Starts a new thread and invokes run() indirectly.	        Runs in the same thread as the caller.
+
+Q14.1 What happens if you call start() twice on the same thread?
+    Throws IllegalThreadStateException.
+
+Q15. What is a deadlock, and how can you avoid it?
+    Deadlock: When two or more threads are waiting indefinitely for resources held by each other.
+
+    Prevention Techniques:
+        Avoid nested locks.
+        Use a lock hierarchy.
+        Use tryLock() from ReentrantLock.
+
+
+
 1. **Java 8 vs Java 11**
-   - **Java 8** introduced features like `Stream API` for functional-style data processing, `Optional` to handle null values gracefully, `Lambda Expressions` for concise code, and `Default Methods` to add functionality to interfaces without breaking existing implementations.
-   - **Java 11** added long-term support (LTS), features like the `HttpClient API` for HTTP calls, support for `var` in lambda expressions, single-file execution without compilation (`java <filename>`), and performance improvements.
+   - **Java 8** introduced features like `Stream API` for functional-style data processing, `Optional` to handle null
+   values gracefully, `Lambda Expressions` for concise code, and `Default Methods` to add functionality to interfaces
+   without breaking existing implementations.
+   - **Java 11** added long-term support (LTS), features like the `HttpClient API` for HTTP calls, support for `var`
+   in lambda expressions, single-file execution without compilation (`java <filename>`), and performance improvements.
 
 2. **HashMap vs ConcurrentHashMap**
    - **HashMap**: Not thread-safe. Concurrent access by multiple threads can result in `ConcurrentModificationException`.
-   - **ConcurrentHashMap**: Thread-safe by segmenting the map and locking only the affected segment during updates, ensuring better performance under concurrency.
+   - **ConcurrentHashMap**: Thread-safe by segmenting the map and locking only the affected segment during updates,
+   ensuring better performance under concurrency.
 
 3. **Stream API**
-   - A feature of Java 8 that provides a functional way to process data collections. It supports operations like filtering (`.filter()`), mapping (`.map()`), reducing (`.reduce()`), and sorting while enabling parallel processing for better performance.
+   - A feature of Java 8 that provides a functional way to process data collections. It supports operations like
+   filtering (`.filter()`), mapping (`.map()`), reducing (`.reduce()`), and sorting while enabling parallel processing
+   for better performance.
 
 4. **Optional Class**
-   - A container object to avoid `NullPointerException`. It provides methods like `.isPresent()`, `.ifPresent()`, and `.orElse()` to handle values that may or may not be null more elegantly.
+   - A container object to avoid `NullPointerException`. It provides methods like `.isPresent()`, `.ifPresent()`,
+   and `.orElse()` to handle values that may or may not be null more elegantly.
 
 5. **Garbage Collector**
-   - Responsible for reclaiming memory by removing unused objects. **G1 GC** is the default collector in Java 11, designed for low-latency applications. Others include **Parallel GC** (high throughput) and **CMS GC** (low pause time).
+   - Responsible for reclaiming memory by removing unused objects. **G1 GC** is the default collector in Java 11,
+   designed for low-latency applications. Others include **Parallel GC** (high throughput) and **CMS GC** (low pause time).
 
 6. **Synchronized vs ReentrantLock**
-   - **synchronized**: Implicit lock on an object or block of code, simple to use but lacks advanced features like fairness or interruption.
-   - **ReentrantLock**: Provides manual locking/unlocking with features like tryLock (non-blocking), lockInterruptibly, and fairness policies.
+   - **synchronized**: Implicit lock on an object or block of code, simple to use but lacks advanced features like
+   fairness or interruption.
+   - **ReentrantLock**: Provides manual locking/unlocking with features like tryLock (non-blocking), lockInterruptibly,
+    and fairness policies.
 
 7. **Lambda Expressions**
-   - Enables functional programming with concise syntax. For example, `(x, y) -> x + y` replaces boilerplate code. Drawback: Complex lambdas can reduce code readability.
+   - Enables functional programming with concise syntax. For example, `(x, y) -> x + y` replaces boilerplate code.
+   Drawback: Complex lambdas can reduce code readability.
 
 8. **ExecutorService**
-   - A framework for managing thread pools. It simplifies thread management with methods like `.submit()` (asynchronous tasks), `.shutdown()`, and `.invokeAll()` (execute multiple tasks simultaneously).
+   - A framework for managing thread pools. It simplifies thread management with methods like `.submit()`
+   (asynchronous tasks), `.shutdown()`, and `.invokeAll()` (execute multiple tasks simultaneously).
 
 9. **equals() vs ==**
    - **`equals()`**: Checks logical equality between objects.
    - **`==`**: Compares object references (whether they point to the same memory location).
 
 10. **Exception Handling**
-   - Use try-catch-finally blocks for robust error handling. Throw custom exceptions for specific scenarios and log errors using frameworks like Log4j for easier debugging.
+   - Use try-catch-finally blocks for robust error handling. Throw custom exceptions for specific scenarios and log
+   errors using frameworks like Log4j for easier debugging.
 
 ### Spring Boot
 1. **What is Spring Boot?**
-   - A framework for building Spring-based applications with minimal configuration. It provides embedded servers (Tomcat), auto-configuration, and production-ready features (e.g., Actuator).
+   - A framework for building Spring-based applications with minimal configuration. It provides embedded servers (Tomcat),
+   auto-configuration, and production-ready features (e.g., Actuator).
 
 2. **Configuration Management**
-   - Spring Boot uses `application.properties` or `application.yml` for managing configurations. For externalized configs, integrate Spring Cloud Config Server.
+   - Spring Boot uses `application.properties` or `application.yml` for managing configurations. For externalized configs,
+   integrate Spring Cloud Config Server.
 
 3. **Spring Boot Starters**
-   - Pre-configured dependencies for faster development. Example: `spring-boot-starter-web` includes everything needed for creating RESTful APIs.
+   - Pre-configured dependencies for faster development. Example: `spring-boot-starter-web` includes everything needed
+   for creating RESTful APIs.
 
 4. **Spring Boot Actuator**
-   - Adds production-ready features like monitoring and health checks (`/actuator/health`). It supports exposing metrics to monitoring tools.
+   - Adds production-ready features like monitoring and health checks (`/actuator/health`). It supports exposing metrics
+   to monitoring tools.
 
 5. **Securing Applications**
    - Use Spring Security for authentication (e.g., OAuth2, JWT) and API gateways (e.g., Kong, WSO2) for securing endpoints.
 
 6. **Spring Bean Lifecycle**
-   - Beans are instantiated, dependencies injected, and initialized before use. Post-initialization hooks include `@PostConstruct` or `InitializingBean`.
+   - Beans are instantiated, dependencies injected, and initialized before use. Post-initialization hooks include
+   `@PostConstruct` or `InitializingBean`.
 
 7. **Dependency Injection**
-   - The process of injecting dependencies into objects managed by Spring’s IoC container using `@Autowired`, constructors, or setters.
+   - The process of injecting dependencies into objects managed by Spring’s IoC container using `@Autowired`, constructors,
+   or setters.
 
 8. **Spring Data JPA**
-   - Simplifies database interactions. Use repositories (e.g., `JpaRepository`) to perform CRUD operations without writing SQL queries.
+   - Simplifies database interactions. Use repositories (e.g., `JpaRepository`) to perform CRUD operations without
+   writing SQL queries.
 
 9. **Profiles**
-   - Used for environment-specific configurations (`dev`, `test`, `prod`). Define profile-specific properties in files like `application-dev.yml`.
+   - Used for environment-specific configurations (`dev`, `test`, `prod`). Define profile-specific properties in files
+   like `application-dev.yml`.
 
 10. **@RestController vs @Controller**
     - `@RestController`: Returns JSON or XML directly.
@@ -68,7 +368,8 @@
 
 ### Microservices
 1. **What are Microservices?**
-   - A design pattern for building loosely coupled services, each responsible for a specific functionality, communicating via APIs.
+   - A design pattern for building loosely coupled services, each responsible for a specific functionality,
+   communicating via APIs.
 
 2. **Communication**
    - Services communicate using REST APIs, message brokers (e.g., Kafka), or gRPC for high-performance use cases.
@@ -77,7 +378,8 @@
    - Include managing service dependencies, ensuring data consistency, handling failures, and monitoring distributed systems.
 
 4. **Circuit Breaker Pattern**
-   - Prevents cascading failures by breaking connections to failing services after repeated failures (e.g., Netflix Hystrix or Resilience4j).
+   - Prevents cascading failures by breaking connections to failing services after repeated failures
+   (e.g., Netflix Hystrix or Resilience4j).
 
 5. **Service Discovery**
    - Dynamically register and discover services using tools like Eureka, Consul, or Zookeeper.
@@ -130,10 +432,12 @@
 
 ### General Questions
 1. **Challenging Project**
-   - Describe the transition of Landmark’s app from monolith to microservices. Highlight challenges like breaking down services and ensuring communication via Kafka.
+   - Describe the transition of Landmark’s app from monolith to microservices. Highlight challenges like breaking down
+   services and ensuring communication via Kafka.
 
 2. **Ensuring Quality**
-   - Write JUnit and Mockito tests for unit testing, peer code reviews, and automate pipelines for CI/CD with Jenkins or Azure DevOps.
+   - Write JUnit and Mockito tests for unit testing, peer code reviews, and automate pipelines for CI/CD with Jenkins
+   or Azure DevOps.
 
 3. **Performance Optimization**
    - Improve query performance, implement caching, and use thread optimization techniques in Java.

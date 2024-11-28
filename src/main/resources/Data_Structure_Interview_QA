@@ -41,3 +41,44 @@ Asked Interview QA
 
 2. Explain Internal working on Hashmap?
 3. Explain Internal working of ConcurrentHashMap?
+
+4. String, StringBuilder, and StringBuffer: Overview
+
+    Aspect	        String	                        StringBuilder	                    StringBuffer
+
+    Mutability	    Immutable	                    Mutable	                            Mutable
+    Thread Safety	Not thread-safe	                Not thread-safe	                    Thread-safe
+    Performance	    Slower for frequent             Faster                              Slower
+                    modifications	                (no synchronization overhead)	    (synchronization adds overhead)
+    Usage Scenario	For fixed or rarely modified    For fast,                           For thread-safe,
+                        data                        single-threaded operations          multi-threaded use
+
+    Which One to Use?
+    Use String: For immutable and frequently read-only data (e.g., constants, keys, or small modifications).
+    Use StringBuilder: For high-performance string manipulation in single-threaded applications.
+    Use StringBuffer: When working with strings in multi-threaded environments where thread safety is required.
+
+5. How will you handle Immutable class contains mutable object?
+    Steps to Handle Immutable Classes with Mutable Objects
+
+    1. Make the Class Final: public final class ImmutableClass { }
+    2. Make Fields Private and Final: private final String name; // Mutable object
+    3. Avoid Providing Setters:
+    4. Use Defensive Copying: When initializing a mutable field or returning it, use a defensive copy to prevent outside modifications.
+    5. Provide Only Getters for Fields:
+
+
+
+
+6. What is list and map and which scenario which can be used?
+
+    Aspect	                    List	                                Map
+
+    Definition	    An ordered collection of elements               A collection of key-value pairs
+                    (duplicates allowed).	                        (no duplicate keys).
+    Ordering	    Maintains the order of insertion.	            No guaranteed ordering .
+                                                                    (depending on the implementation)
+    Key Feature	    Access elements by index.	                    Access values by keys.
+    Duplicates	    Allows duplicate elements.	                    Keys are unique; values can be duplicated.
+
+

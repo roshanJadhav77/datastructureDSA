@@ -268,6 +268,109 @@ Explain dependency Injection with example?
    but it’s better to stick to constructor injection for larger projects to ensure clarity and immutability.
 
 ------------------------------------------------------------------------------------------------------------------------
+How do you handle Exception in your project? what if an unknow error comes then how you handle it? what find of status
+code you show to client?
+answer:
+
+    In my project, we use Spring Boot's Exception Handling mechanism to handle exceptions systematically and return
+    meaningful responses to the client. Here's how:
+
+    1. Global Exception Handling:
+    We use @ControllerAdvice and @ExceptionHandler to manage exceptions centrally, ensuring a consistent response format.
+
+    2. Custom Exceptions:
+    For business logic, we define custom exceptions like PaymentNotFoundException or InvalidTransactionException,
+    making error handling specific and clear.
+
+    3. Unknown Errors:
+    For unexpected exceptions, we handle them with a generic Exception handler in the global exception class.
+
+    example:
+        @ControllerAdvice
+        public class GlobalExceptionHandler {
+
+            @ExceptionHandler(PaymentNotFoundException.class)
+            public ResponseEntity<String> handlePaymentNotFound(PaymentNotFoundException ex) {
+                return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND); // 404
+            }
+
+            @ExceptionHandler(Exception.class)
+            public ResponseEntity<String> handleGenericException(Exception ex) {
+                return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR); // 500
+            }
+        }
+
+Status Codes Returned to Client:
+400 (Bad Request): For validation errors or incorrect input.
+404 (Not Found): For resources not found (e.g., invalid payment ID).
+500 (Internal Server Error): For unknown errors or system failures.
+401 (Unauthorized): If authentication fails.
+403 (Forbidden): If the user is not allowed to access the resource
+
+Counter Question: What If an Unknown Error Occurs?
+   1.  We log the error using a logging framework like Logback or SLF4J for debugging and diagnostics.
+   2.  Return a 500 Internal Server Error to the client with a user-friendly message:
+    "Something went wrong. Please try again later."
+
+------------------------------------------------------------------------------------------------------------------------
+How will you configure your server to server for more request?
+    Using Load balance like Nginx
+
+------------------------------------------------------------------------------------------------------------------------
+Suppose you have service performing transaction and another service which is checking balance, how you will handle this?
+in what and all you can handle?
+answer:
+    Ways to Handle the Scenario
+    1. Use same Database Transactions:
+       If both services access the same database:
+
+       Wrap transactional operations (debits/credits) in a database transaction to ensure atomicity.
+       Use isolation levels (e.g., READ COMMITTED or REPEATABLE READ) to prevent dirty reads and ensure consistent balance checks.
+
+    2. Use Distributed Transactions:
+        Saga Pattern: Break the transaction into smaller steps managed by a coordinator.
+        E.g., Debit account → Record transaction → Check balance.
+        Pros: Ensures consistency across services. Cons: Complex to implement and manage.
+
+    3. Event-Driven Architecture:
+        Use an event-driven approach with a message broker (e.g., Kafka).
+        The transaction service publishes an event (e.g., TransactionCompleted) after completing a transaction.
+        The balance service listens to these events and updates a read-optimized cache for quick balance checks.
+
+------------------------------------------------------------------------------------------------------------------------
+How do you test Rest API, which has Authentication?
+    Use Postman to test authentication by setting up Basic Auth or Bearer Token in the Authorization tab.
+
+------------------------------------------------------------------------------------------------------------------------
+Explain @MediaType ?
+    @MediaType is an annotation used in JAX-RS (Java API for RESTful Web Services) to define the media type (MIME type)
+    of the request or response. It helps specify the format in which the data is sent or received,
+    such as application/json, application/xml, text/plain, etc.
+
+    Key Points:
+    Used for: Defining the content type for request or response in REST APIs.
+    Commonly used in:
+    @Produces: Specifies the media types that a method can return.
+    @Consumes: Specifies the media types that a method can consume.
+
+    @Path("/user")
+    public class UserService {
+
+        @GET
+        @Path("/info")
+        @Produces(MediaType.APPLICATION_JSON) // Response will be in JSON format
+        public User getUserInfo() {
+            return new User("John", "Doe");
+        }
+
+        @POST
+        @Consumes(MediaType.APPLICATION_JSON) // Accepts JSON data in request body
+        public Response createUser(User user) {
+            // Process user creation
+            return Response.status(201).build();
+        }
+    }
+
 
 
 ------------------------------------------------------------------------------------------------------------------------
