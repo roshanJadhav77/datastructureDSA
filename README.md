@@ -102,4 +102,11 @@
 * [Palindrome Filter using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/PalindromeFilter.java)
 * [Second Highest using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SecondHighest.java)
 * [Sort Map By Value  using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SortMapByValue.java)
+* [Segregate Even Odd using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SegregateEvenOdd.java)
+* [Find Min Max using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/FindMinMax.java)
+* [Sort string By length using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SortByLength.java)
+* [Remove Null And Empty  using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/RemoveNullAndEmpty.java)
+* [Remove Duplicate using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/RemoveDuplicate.java)
+* [Find Common Element using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/FindCommanElement.java)
+* [Count Strings using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/CountStrings.java)
 
