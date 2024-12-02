@@ -102,4 +102,5 @@
 * [Palindrome Filter using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/PalindromeFilter.java)
 * [Second Highest using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SecondHighest.java)
 * [Sort Map By Value  using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SortMapByValue.java)
+* [Segregate Even Odd using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SegregateEvenOdd.java)
 
