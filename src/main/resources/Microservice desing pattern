@@ -166,3 +166,59 @@ Retry a failed payment gateway request before marking it as failed.
         }
     }
 
+------------------------------------------------------------------------------------------------------------------------
+4. What is CQRS?
+    CQRS stands for Command Query Responsibility Segregation.
+    It is a design pattern that separates read operations (queries) from write operations (commands) in an application.
+    We often combined CQRS with event-driven architecture to synchronize read and write models effectively.
+
+    * Command: Handles write operations (e.g., create, update, delete).
+    * Query: Handles read operations (e.g., fetch data, retrieve details).
+
+    Benefits of CQRS:
+        1. Scalability: Read and write operations can be scaled independently.
+        2. Performance: Read operations can be optimized separately, such as using denormalized data.
+        3. Flexibility: Enables better handling of complex business rules during write operations.
+
+    Example of CQRS in Your Payment Domain:
+        In a payment system:
+        * Commands handle actions like processing payments, updating balances, or refunding transactions.
+        * Queries handle fetching transaction history or user account balances.
+
+    1. Command: Write Model
+    // Command: Process Payment
+    public class ProcessPaymentCommand {
+        private String transactionId;
+        private double amount;
+
+        // Constructor, getters, and setters
+    }
+
+    public class PaymentService {
+        public void processPayment(ProcessPaymentCommand command) {
+            // Validate command
+            // Update balance in database
+            // Publish event (e.g., PaymentProcessedEvent)
+            System.out.println("Payment processed for transaction: " + command.getTransactionId());
+        }
+    }
+
+    2. Query: Read Model
+    public class TransactionQueryService {
+        private final TransactionRepository repository;
+
+        public TransactionQueryService(TransactionRepository repository) {
+            this.repository = repository;
+        }
+
+        public List<Transaction> getTransactionHistory(String userId) {
+            // Optimized query to fetch transaction history
+            return repository.findByUserId(userId);
+        }
+    }
+
+
+
+
+
+
