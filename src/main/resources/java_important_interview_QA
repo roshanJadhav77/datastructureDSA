@@ -3,8 +3,7 @@
 Asked question:
 
 1. Scenario: if you have password in you class how you will create variable for that do that it should not be logged ?
-    To handle sensitive information such as passwords in your Java class securely, you should make sure that the password
-    is never exposed in logs, error messages, or stack traces. Here are some ways to handle this:
+ans: Using char[] for passwords, overwriting the password after use, and preventing logging of sensitive data.
 
     1. Using char[] Instead of String for Passwords
         In Java, String is immutable, and once a String is created, it cannot be modified. Even if you overwrite a
@@ -19,6 +18,7 @@ Asked question:
                 public UserCredentials(char[] password) {
                     this.password = password;
                 }
+            }
 
                 // Example usage
                 public static void main(String[] args) {
