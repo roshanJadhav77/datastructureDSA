@@ -18,6 +18,8 @@ public class FindLargestTwo {
         }
 
         System.out.println("1st Max number is :"+maxOne);
-        System.out.println("1st Max number is :"+maxTwo);
+        System.out.println("2st Max number is :"+maxTwo);
     }
+    //1st Max number is :9
+    //2st Max number is :8
 }

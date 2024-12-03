@@ -10,5 +10,5 @@ public class EvenNumver {
         list.stream()
                 .filter(num -> num % 2 == 0)
                 .forEach(System.out::print);
-    }
+    } // even : 2 4 6 8 0 //odd : 1 3 5 7 9
 }

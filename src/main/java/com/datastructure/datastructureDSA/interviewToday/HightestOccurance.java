@@ -2,6 +2,7 @@ package com.datastructure.datastructureDSA.interviewToday;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class HightestOccurance {
     public static void main(String[] args) {
@@ -25,7 +26,12 @@ public class HightestOccurance {
                num = value.getKey();
            }
         }
+        // System.out.println("Number "+num+" is the most Occurange "+max);
 
-        System.out.println("Number "+num+" is the most Occurange "+max);
-    }
+        //or
+
+        Map.Entry<Integer, Integer> entry = map.entrySet().stream().max(Map.Entry.comparingByValue()).get();
+        System.out.println("Number " + entry.getKey() + " is the most Occurring " + entry.getValue());
+
+    } // Number 4 is the most Occurange 4
 }

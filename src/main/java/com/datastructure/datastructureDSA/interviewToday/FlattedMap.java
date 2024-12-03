@@ -9,7 +9,7 @@ public class FlattedMap {
         List<List<Integer>> list = Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5));
 
         list.stream().flatMap(List::stream)
-                .collect(Collectors.toList())
+                .toList()
                 .forEach((entry -> System.out.print(entry+" ") ));
-    }
+    } // 1 2 3 4 5
 }

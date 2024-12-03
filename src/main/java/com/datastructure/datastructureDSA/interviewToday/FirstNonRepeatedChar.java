@@ -25,5 +25,5 @@ public class FirstNonRepeatedChar {
 
         System.out.println(entry);
 
-    }
+    } // output : w
 }

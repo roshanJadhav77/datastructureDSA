@@ -13,5 +13,5 @@ public class FindCommanElement {
                 .filter(list2::contains)
                 .collect(Collectors.toList())
                 .forEach(System.out::println);
-    } //output 4 5
+    } // output 4 5
 }
