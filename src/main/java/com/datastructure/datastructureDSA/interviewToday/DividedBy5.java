@@ -14,5 +14,5 @@ public class DividedBy5 {
         list.stream()
                 .filter(e -> e % 5 == 0)
                 .forEach(System.out::println);
-    }
+    } //output = 85,115,45
 }

@@ -1,9 +1,6 @@
 package com.datastructure.datastructureDSA.interviewToday;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CountWordFrequency {
@@ -15,5 +12,15 @@ public class CountWordFrequency {
         System.out.println(collect);
 
 
-    }
+        //Highest repeated
+        Map.Entry<String, Long> stringLongEntry = collect.entrySet()
+                .stream()
+                .filter(e -> e.getValue() > 1)
+                .findFirst()
+                .get();
+
+        System.out.println(stringLongEntry.getKey());
+        System.out.println(stringLongEntry.getValue());
+
+    } // {banana=3, cherry=1, apple=2}
 }

@@ -10,5 +10,5 @@ public class CheckOddNumbers {
         list.stream()
                 .filter(num -> num % 2 != 0)
                 .forEach(System.out::println);
-    }
+    } //output: 1 3 5 7
 }

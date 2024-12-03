@@ -23,7 +23,7 @@ public class CountOccuranceOfWords {
         }
 
         map.entrySet().stream()
-                .filter(e -> e.getValue() > 1)
+                .filter(e -> e.getValue() > 0)
                 .forEach( entry -> System.out.println("Repeated words "+entry.getKey() + " count of "+entry.getValue()));
 
        /* for(Map.Entry<String, Integer>  entry : map.entrySet()){
