@@ -1,0 +1,79 @@
+1. What is Azure DevOps, and how have you used it in your projects?
+    Azure DevOps is a set of tools and services that provides version control, CI/CD pipelines, and application
+    deployment capabilities.
+    In my project:
+        * I used Azure DevOps for managing Git repositories to version control our Java microservices codebase.
+        * Configured Azure Pipelines to automate build, test, and deploy processes, ensuring quick and error-free deployments.
+
+2. How did you implement JUnit tests for backend microservices on Azure?
+    JUnit was used to write unit and integration tests for backend microservices. The test execution was integrated into
+    the CI/CD pipeline on Azure DevOps.
+        * Automated the test execution during the build process.
+        * Configured coverage reports to ensure code quality.
+    example:
+        These tests were executed automatically in Azure Pipelines, generating coverage reports using SonarQube to
+        ensure we met the 85% code coverage threshold.
+
+3. What is Azure App Services, and why did you choose it for deploying microservices?
+    Azure App Services is a platform-as-a-service (PaaS) offering that allows deploying, managing, and scaling
+    web applications and APIs. It abstracts infrastructure management, allowing us to focus on development.
+    Example:
+    In my e-commerce project, I deployed the Inventory Management microservice to Azure App Services because:
+
+    * It supports Java Spring Boot applications natively.
+    * It provided auto-scaling during high traffic, such as sales events.
+    * Monitoring tools like Application Insights helped track performance and troubleshoot issues.
+
+4. How does Azure Kubernetes Service (AKS) help in orchestrating Java-based microservices?
+    Azure Kubernetes Service (AKS) provides a managed environment for deploying and managing containerized applications.
+    It helps scale, orchestrate, and maintain availability.
+    Example:
+    In the Shipping microservice, we:
+        1. Built Docker images for the service using Spring Boot.
+        2. Deployed the images to an AKS cluster.
+        3. Configured horizontal pod autoscaling to handle varying traffic during peak hours.
+
+    AKS ensured efficient resource usage and seamless scaling, especially during holiday sales.
+
+5. How did you achieve over 85% code coverage using JUnit in Azure DevOps Pipelines?
+    Answer:
+    To achieve high coverage:
+
+    I wrote extensive JUnit test cases covering all service layers (controller, service, and repository).
+    Integrated SonarQube with Azure Pipelines to analyze the coverage and code quality.
+    Configured the pipeline to fail the build if coverage dropped below 85%.
+
+7. How do you monitor the performance of microservices deployed on Azure?
+    Answer:
+    We used Azure Monitor and Application Insights to track the performance of our microservices.
+
+    Monitored metrics like CPU usage, memory usage, and response time.
+    Set up alerts for thresholds like high response time or unavailability.
+    Example:
+    For the Checkout microservice, I used Application Insights to:
+
+    Analyze telemetry data and identify slow API calls.
+    Resolve issues by optimizing database queries and reducing response time by 30%.
+
+8. How did you secure sensitive information, like database credentials, in an Azure-based CI/CD pipeline?
+    Answer:
+    Sensitive data like database credentials and API keys were stored in "Azure Key Vault".
+
+    * Access to secrets was granted only to authorized pipelines using managed identities.
+    * The pipeline retrieved credentials securely from the Key Vault during deployment.
+
+9. Explain the process of containerizing and deploying a Java-based application using AKS.
+    Answer:
+    Containerization:
+        Created a Dockerfile for the Java Spring Boot application.
+        Built a Docker image using Maven and pushed it to Azure Container Registry (ACR).
+
+    Deployment:
+        Deployed the Docker image to an AKS cluster.
+        Configured a Kubernetes deployment YAML to define the desired state.
+
+    Scaling:
+        Enabled autoscaling to ensure optimal resource utilization during high traffic.
+
+    Example:
+    For the Payment Gateway microservice, this process ensured smooth handling of thousands of concurrent transactions.
