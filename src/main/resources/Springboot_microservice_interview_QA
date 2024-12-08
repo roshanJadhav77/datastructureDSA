@@ -1,6 +1,64 @@
 Spring Boot Questions:
 
 Asked in interview:
+1. life cycle of a Bean in Spring Boot
+    1. Bean Instantiation: Bean is created. @Component, @Service
+    2. Dependency Injection: Dependencies are injected into the bean. @Autowired
+    3. Bean Initialization: Custom initialization logic is executed.
+    4. Bean Usage: The bean is ready to use.
+    5. Bean Destruction: Cleanup logic is executed before the bean is removed. @PreDestroy
+
+2. Explain Bean Scope ?
+    In Spring, bean scope defines the lifecycle and visibility of a bean. It determines how the bean is created, shared,
+    and used within the application context.
+
+    Types of Bean Scopes
+    1. Singleton (Default Scope) :
+    Definition : Only one instance of the bean is created per Spring application context.
+    When to Use: For stateless beans shared across the application, like configuration or utility beans or logs.
+    Key Point: All requests share the same instance of the bean.
+    example:
+        @Scope("singleton")
+        @Component
+        public class MyBean { }
+
+    2. Prototype :
+    Definition: A new instance of the bean is created each time it is requested from the application context.
+    When to Use: For stateful beans or beans with mutable data that should not be shared.
+    example:
+        @Scope("prototype")
+        @Component
+        public class MyBean { }
+
+    3. Request (Web Application) :
+    Definition: A new instance of the bean is created for each HTTP request.
+    When to Use: For beans that handle HTTP request-specific data.
+    Key Point: The bean lives only for the duration of the HTTP request.
+
+    4. Session (Web Applications) :
+    Definition: A new instance of the bean is created for each HTTP session.
+    When to Use: For beans that maintain session-specific data like user preferences.
+    Key Point: The bean is tied to the HTTP session and destroyed when the session ends.
+
+    5. Application (Web Applications) :
+    Definition: A single instance of the bean is created for the entire ServletContext.
+    When to Use: For shared resources across all HTTP requests and sessions.
+
+    6. Thread (Custom Scope) :
+    Definition: A new instance of the bean is created for each thread.
+    When to Use: For thread-specific tasks (e.g., in multi-threaded applications).
+
+
+ Key Differences (Interview-Ready Table)
+    Scope	        Instance Count	                    Lifetime	                    Usage
+    --------------------------------------------------------------------------------------------------------------------
+    Singleton	    1 per application	         Entire application lifecycle	        Stateless beans
+    Prototype	    New per request	             Caller manages the bean's lifecycle	Stateful beans
+    Request	        New per HTTP request	     HTTP request duration	                Request-specific beans (e.g., REST APIs)
+    Session	        1 per HTTP session           HTTP session duration	                Session-specific beans
+    Application	    1 per ServletContext	     ServletContext duration	            Shared web resources
+
+------------------------------------------------------------------------------------------------------------------------
 1. what is fallback method in microservice?
     Definition:
     A fallback method in a microservices architecture is a predefined mechanism that provides an alternative response or
