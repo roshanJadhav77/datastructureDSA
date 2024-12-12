@@ -1,5 +1,32 @@
 Spring Boot Questions:
 
+*** How Do You Handle Transactions in Microservices?
+    Saga Pattern (Preferred for Microservices)
+    what is saga: A sequence of local transactions where each service performs a transaction and then triggers the next
+                  service in the workflow.
+
+    Types:
+     1. Choreography: (No central co-ordinator is required)
+        * Each service publishes events when its transaction is completed.
+        * Other services listen to the events and take appropriate actions.
+        * Use case: No central coordinator is required.
+
+        example:
+            * Order Service publishes an "Order Placed" event.
+            * Payment Service listens to it and processes the payment.
+            * Shipping Service listens to the "Payment Completed" event and dispatches the order.
+
+     2. Orchestration:
+        * A central orchestrator service manages the transaction workflow by invoking specific services sequentially.
+        * Use case: When strict control over the transaction flow is needed.
+
+        example:
+            * Order Service: Starts the transaction and sends a request to the orchestrator.
+            * Orchestrator Service:
+                * Calls Payment Service → If success, calls Inventory Service → Then calls Shipping Service.
+                * Rolls back if any step fails.
+
+
 Asked in interview:
 1. life cycle of a Bean in Spring Boot
     1. Bean Instantiation: Bean is created. @Component, @Service
