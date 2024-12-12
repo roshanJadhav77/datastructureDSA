@@ -1,6 +1,41 @@
 
 ### Java
 Asked question:
+
+1. Scenario: if you have password in you class how you will create variable for that do that it should not be logged ?
+ans: Using char[] for passwords, overwriting the password after use, and preventing logging of sensitive data.
+
+    1. Using char[] Instead of String for Passwords
+        In Java, String is immutable, and once a String is created, it cannot be modified. Even if you overwrite a
+        String containing sensitive information (like a password), it may still exist in memory for a while
+        (due to string interning and garbage collection). Therefore, it’s better to use a char[] array,
+        which can be overwritten when you're done using the password.
+
+            public class UserCredentials {
+                private char[] password;
+
+                // Constructor to initialize password
+                public UserCredentials(char[] password) {
+                    this.password = password;
+                }
+            }
+
+                // Example usage
+                public static void main(String[] args) {
+                    char[] userPassword = "mySecurePassword".toCharArray();
+
+                    UserCredentials user = new UserCredentials(userPassword);
+
+                    // You should not log the password
+                    // System.out.println("Password: " + new String(user.getPassword()));  // DO NOT LOG
+
+                    // After usage, clear password
+                    user.clearPassword();
+                }
+            }
+
+
+
 What is cloning and why do we need cloning ?
     Cloning in Java refers to creating an exact copy of an object. It is typically done using the clone() method defined
     in the Object class. Cloning creates a new object that is a copy of the original, with the same field values but a

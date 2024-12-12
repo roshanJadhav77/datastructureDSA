@@ -1,0 +1,86 @@
+High-Level Design (HLD) Questions
+
+1. Design an E-commerce System ? How would you design an e-commerce application like Amazon or Flipkart?
+    Focus Areas:
+        Components like product catalog, cart, order management, payment, and delivery.
+        Scalability for handling high traffic.
+        Database design for storing user and product data.
+        Integration with third-party payment systems.
+
+        1. Components:
+           User Service: Handles user management (sign-up, authentication).
+           Product Service: Manages the product catalog, inventory, and pricing.
+           Cart Service: Tracks users' shopping carts.
+           Order Service: Processes orders, payments, and invoices.
+           Payment Gateway: Integrates with third-party payment providers.
+           Delivery Service: Tracks shipping and delivery.
+
+        2. Scalability:
+           Use load balancers (e.g., NGINX) to distribute traffic.
+           Cache frequently accessed data (e.g., products) using Redis.
+           Use microservices architecture for modularity and independent scaling.
+
+        3. Database:
+           Relational DB for transactions (e.g., MySQL for orders and payments).
+           NoSQL DB (e.g., MongoDB) for product catalogs and user activity.
+
+        4. Communication:
+           Use REST APIs for service communication for synchronous.
+           Add message queues (e.g., Kafka) for asynchronous tasks like notifications.
+
+        5. Security:
+           Use OAuth2/JWT for authentication.
+           Encrypt sensitive data like passwords and payment details.
+
+
+2. Design a Payment Gateway System ? How would you design a payment gateway system for processing online transactions?
+    1. Components:
+        Authentication: Verify user credentials securely.
+        Transaction Processor: Handles payment initiation and validation.
+        Fraud Detection: Detects unusual patterns to prevent fraud.
+        Notification System: Notifies users of payment success or failure.
+
+    2. Workflow:
+        User submits payment request → Request is validated → API communicates with third-party payment providers
+        (e.g., UPI, PayPal) → Updates transaction status.
+
+    3. Scalability:
+        Use stateless microservices for transaction handling.
+        Enable horizontal scaling for high traffic during sales.
+        Cache results of frequent checks (e.g., card validation) using Redis.
+
+    4. Resiliency:
+        Use Circuit Breaker Pattern to prevent cascading failures.
+        Implement retries for failed transactions.
+
+------------------------------------------------------------------------------------------------------------------------
+LLD (Low-Level Design) Questions and Answers:
+
+1. How would you design a payment service class?
+Answer:
+    Entities:
+        Payment: Represents payment details (amount, type).
+        Transaction: Tracks payment status (Pending, Success, Failed).
+        User: Links payment to a specific user.
+
+2. How would you implement an inventory management system?
+    Entities:
+        Product: Stores product details (ID, name, price).
+        Stock: Tracks inventory quantity.
+        Warehouse: Stores warehouse location and stock.
+
+
+Scenario-Based Questions
+1. How do you scale an application to handle 1 million concurrent users?
+Answer:
+    * Use load balancers (NGINX or Azure Load Balancer).
+    * Enable horizontal scaling for backend microservices using Kubernetes (AKS).
+    * Cache frequently accessed data with Redis.
+    * Use event-driven architecture with Kafka for asynchronous tasks.
+
+2. How do you ensure fault tolerance in a payment service?
+Answer:
+    * Use Circuit Breaker Pattern to handle downstream failures.
+    * Implement retry logic with exponential backoff for transient errors.
+    * Use replicated databases across multiple availability zones for high availability.
+
