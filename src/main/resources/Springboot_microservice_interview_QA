@@ -24,7 +24,8 @@ Spring Boot Questions:
             * Order Service: Starts the transaction and sends a request to the orchestrator.
             * Orchestrator Service:
                 * Calls Payment Service → If success, calls Inventory Service → Then calls Shipping Service.
-                * Rolls back if any step fails.
+                * \
+                    `Rolls back if any step fails.
 
 
 Asked in interview:
