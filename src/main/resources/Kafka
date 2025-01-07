@@ -131,4 +131,29 @@ Answer:
 
         Source connectors: Import data into Kafka.
         Sink connectors: Export data from Kafka.
+****
+5. What are Kafka offsets, and how are they managed?
+    Offsets are unique identifiers for messages within a partition. They indicate the position of a message in the log.
+
+        Kafka tracks offsets at the consumer group level for each partition.
+****
+6. How does Kafka achieve exactly-once delivery semantics?
+    Kafka achieves exactly-once semantics through:
+
+    1. Idempotent Producers: Ensures no duplicate messages are written, even during retries (enable.idempotence=true).
+    2. Kafka Transactions: Allows atomic writes across multiple partitions and offsets.
+    3. Consumer Side Deduplication: Ensures no duplicate processing by storing processed event IDs.
+
+    These features together prevent duplicates in both publishing and consuming messages.
+
+7. What is log compaction, and when would you use it?
+    Log compaction is a Kafka feature that retains only the latest value for each key in a topic.
+    Older versions are deleted.
+
+    Use cases:
+    Maintaining a system's current state (e.g., user profiles, configuration updates).
+    Reducing storage by eliminating outdated data.
+
+
+
 
