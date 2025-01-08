@@ -2,6 +2,39 @@
 ### Java
 Asked question:
 
+1. what is Transient ?
+    The transient keyword in Java is used to indicate that a specific field of a class should not be serialized.
+    Transient variables value will not be saved.
+    Use: exclude sensitive data. like password.
+
+    example:
+
+    class Person implements Serializable{
+        String fname = "John,
+        String lname = "Doe,
+        int age = 24,
+        transient int accessCode = 0
+    }
+
+2. What is serialization?
+    serialized when the object is converted to a byte stream.
+
+    To serialize an object means to convert its state to a byte stream so that the byte stream can be reverted back
+    into a copy of the object. A Java object is serializable if its class or any of its superclasses implements either
+    the java. io.
+
+3. what is Volatile?
+    The volatile keyword in Java is used to mark a variable as being stored in the main memory, and to ensure that all
+    threads see the same value for that variable.
+
+    Purpose: The volatile keyword is primarily used in multi-threaded programming to ensure that changes to a variable
+    are visible to other threads.
+
+    How it works: The volatile keyword ensures that a variable is always read from and written to the main memory,
+    rather than from the CPU cache. This prevents thread caching issues, which can occur when different threads have
+    different values of the same variable.
+
+
 1. Scenario: if you have password in you class how you will create variable for that do that it should not be logged ?
 ans: Using char[] for passwords, overwriting the password after use, and preventing logging of sensitive data.
 
@@ -275,6 +308,17 @@ Q10. Can we have multiple catch blocks for the same exception?
      No, duplicate catch blocks are not allowed.
 
 Multithreading
+ Q1. what is Volatile?
+    The volatile keyword in Java is used to mark a variable as being stored in the main memory, and to ensure that all
+    threads see the same value for that variable.
+
+    Purpose: The volatile keyword is primarily used in multi-threaded programming to ensure that changes to a variable
+    are visible to other threads.
+
+    How it works: The volatile keyword ensures that a variable is always read from and written to the main memory,
+    rather than from the CPU cache. This prevents thread caching issues, which can occur when different threads have
+    different values of the same variable.
+
 Q11. What is the difference between synchronized and volatile?
      Synchronized	                                                Volatile
      Ensures thread safety by allowing one thread at a time.	    Ensures visibility of changes across threads.
