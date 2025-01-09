@@ -46,6 +46,7 @@
 * [Find First non repeating character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/java8/FindFirstNonRepeatingChar.java)
 * [Repeated words in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/java/array/highestocurrance/CountRepeatedWords.java)
 * [Find Max and min occurrence of character in given string](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/strings/MaxMinOccurrence.java)
+* [Sub String of words](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SubStringOfWords.java)
 
 
 
@@ -109,4 +110,5 @@
 * [Remove Duplicate using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/RemoveDuplicate.java)
 * [Find Common Element using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/FindCommanElement.java)
 * [Count Strings using java 8](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/CountStrings.java)
+* [Sub String of words](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/SubStringOfWords.java)
 
