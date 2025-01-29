@@ -85,6 +85,8 @@
 
 
 ### Interview
+
+* [Pair Sum of Integer](https://github.com/roshanJadhav77/datastructureDSA/blob/loca_reposi/src/main/java/com/datastructure/datastructureDSA/interviewToday/PairNumberAsConstance.java)
 * [First Non Repeating character from String](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/interview/coforge/FirstNonRepeatingChar.java)
 * [Shift Zeros from an given array](https://github.com/roshanJadhav77/datastructureDSA/blob/main/src/main/java/com/datastructure/datastructureDSA/java/interview/coforge/ShiftZeros.java)
 * [Intersection of Two Array](https://github.com/roshanJadhav77/datastructureDSA/blob/dev/src/main/java/com/datastructure/datastructureDSA/java/array/IntersectionTwoArray.java)
