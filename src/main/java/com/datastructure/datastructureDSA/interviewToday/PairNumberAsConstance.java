@@ -27,13 +27,15 @@ public class PairNumberAsConstance {
         //optional
         Set<String> uniquePairs = new HashSet<>();
 
-        // Approach 1
-        approach1(numbers, k, seenNumbers);
-        approach2(numbers, k, seenNumbers, uniquePairs);
+
+        //approach1(numbers, k, seenNumbers);
+       // approach2(numbers, k, seenNumbers, uniquePairs);
+       // approach3(numbers, k, seenNumbers);
+        approach4(numbers, k, seenNumbers);
 
     }
 
-    //best approach
+    //best approach using java 7
     private static void approach1(List<Integer> numbers, int k, Set<Integer> seenNumbers) {
         for (int num : numbers){
             int c = k - num;
@@ -44,6 +46,29 @@ public class PairNumberAsConstance {
             seenNumbers.add(num);
         }
     }
+
+    private static void approach3(List<Integer> numbers, int k, Set<Integer> seenNumbers) {
+        numbers.forEach(num -> {
+            int complement = k - num;
+            if (seenNumbers.contains(complement)) {
+                System.out.println("Pair found : (" + num + "," + complement + ")");
+            }
+            seenNumbers.add(num);
+        });
+    }
+
+    //Using Streams
+    private static void approach4(List<Integer> numbers, int k, Set<Integer> seenNumbers) {
+        numbers.stream()
+                .forEachOrdered(num -> {
+                    int complement = k - num;
+                    if (seenNumbers.contains(complement)) {
+                        System.out.println("Pair found : (" + num + "," + complement + ")");
+                    }
+                    seenNumbers.add(num);
+                });
+    }
+
 
     private static void approach2(List<Integer> numbers, int k, Set<Integer> seenNumbers, Set<String> uniquePairs) {
         for (int num : numbers) {
