@@ -5,7 +5,7 @@ Spring Boot Questions:
     from a single location.
     example: i used it to manage API keys, database configuration and environment specific properties.
 
-*** How Do You Handle Transactions in Microservices?
+2. How Do You Handle Transactions in Microservices?
     Saga Pattern (Preferred for Microservices)
     what is saga: A sequence of local transactions where each service performs a transaction and then triggers the next
                   service in the workflow.

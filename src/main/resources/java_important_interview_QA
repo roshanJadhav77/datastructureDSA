@@ -335,7 +335,7 @@ Q12. What is the difference between Callable and Runnable?
 Q12.1 Which would you use if you need a return value?
       Use Callable.
 
-Q13. What is the purpose of the join() method in threads?
+Q13. What is the purpose of the join() methodv in threads?
     join() makes the current thread wait until the thread it is called on finishes execution.
 
 Q13.1 What happens if you call join() on the same thread?

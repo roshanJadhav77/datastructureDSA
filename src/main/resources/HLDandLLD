@@ -123,8 +123,56 @@ Answer:
     Use API Gateway (Kong, Apigee) to route versions.
     Ensure backward compatibility by deprecating APIs gracefully.
 
+Q3: How do you design an event-driven system for asynchronous processing?
+Answer:
 
- 2. System Design Questions
+  1. Use Kafka for pub-sub messaging.
+  2. Implement Event Sourcing & CQRS.
+  3. Use SAGA Pattern for distributed transactions.
+  4. Ensure idempotency with unique event IDs.
+
+Q7: How do you handle concurrency in Java?
+Answer:
+
+  1. Use synchronized, ReentrantLock for thread safety.
+  2. Prefer ConcurrentHashMap, CopyOnWriteArrayList for collections.
+  3. Use Executors instead of manual thread creation.
+  4. Implement ForkJoinPool for parallel processing.
+
+2. Security
+
+Q1. Where to Implement Security: API Gateway vs. Microservices?
+Ans:  When implementing Authentication (AuthN) and Authorization (AuthZ) in a microservices architecture,
+      you have two options:
+
+    1. At the API Gateway (Centralized Security)
+    2. Inside Each Microservice (Distributed Security)
+    3. Hybrid (Best Approach)
+    The best approach depends on security needs, scalability, and performance.
+
+    3.  Hybrid (Best Approach):
+      A hybrid approach provides balanced security and performance:
+        1. API Gateway handles "Authentication" (OAuth2, JWT validation).
+        2. Microservices enforce fine-grained "Authorization" (Role Based Access(RBAC), ABAC).
+
+      Example Flow:
+      Client sends a request with a JWT token to the API Gateway.
+      API Gateway verifies the token (AuthN) and adds user roles in the request headers.
+      Microservices extract roles from headers and apply authorization rules (AuthZ).
+
+      final Answer:
+        "We implement authentication at the API Gateway using OAuth2/JWT to provide centralized security and performance 
+        optimization. 
+        
+        Authorization is enforced at the microservice level to allow fine-grained access control. 
+        Benefit: This hybrid approach ensures scalable and secure access management while minimizing overhead at 
+                  individual services."
+
+
+  
+  
+  
+  2. System Design Questions
 
  Q4: How would you design a CI/CD pipeline for a microservices-based application?
  Answer:

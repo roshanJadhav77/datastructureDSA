@@ -4,13 +4,13 @@ Q1: Design API Gateway?
     An API Gateway acts as the entry point for all client requests and routes them to the appropriate microservices.
     It helps in security, authentication, load balancing, rate limiting, monitoring, and caching.
 
-    1️⃣ Key Features of an API Gateway
-    ✅ Single Entry Point → Clients call the API Gateway instead of calling microservices directly.
-    ✅ Routing & Load Balancing → Directs requests to appropriate microservices.
-    ✅ Authentication & Security → Uses JWT/OAuth2.0 for authentication.
-    ✅ Rate Limiting & Throttling → Prevents excessive API calls using Redis-based limits.
-    ✅ Monitoring & Logging → Tracks API usage with Prometheus/Grafana.
-    ✅ Caching → Uses Redis or in-memory cache for faster responses.
+    Key Features of an API Gateway
+    * Single Entry Point → Clients call the API Gateway instead of calling microservices directly.
+    * Routing & Load Balancing → Directs requests to appropriate microservices.
+    * Authentication & Security → Uses JWT/OAuth2.0 for authentication.
+    * Rate Limiting & Throttling → Prevents excessive API calls using Redis-based limits.
+    * Monitoring & Logging → Tracks API usage with Prometheus/Grafana.
+    * Caching → Uses Redis or in-memory cache for faster responses.
 
     2️⃣ API Gateway High-Level Design (HLD)
                             ┌───────────────────────────┐
@@ -43,10 +43,10 @@ Q1: How to Design a RESTful API in a Microservices Architecture?
 
 Q2. How to Break Down a Monolithic Application into Microservices?
     1. Understanding the Monolithic System
-        ✅ Current Business Domains – Identify modules like User Management, Orders, Payments, etc.
-        ✅ Database Structure – Determine how data is tightly coupled between modules.
-        ✅ Code Dependencies – Analyze code interdependencies and shared libraries.
-        ✅ Performance Bottlenecks – Identify slow, high-load areas that need scalability.
+        * Current Business Domains – Identify modules like User Management, Orders, Payments, etc.
+        * Database Structure – Determine how data is tightly coupled between modules.
+        * Code Dependencies – Analyze code interdependencies and shared libraries.
+        * Performance Bottlenecks – Identify slow, high-load areas that need scalability.
 
 Q1: How do microservices communicate?
 Answer:
