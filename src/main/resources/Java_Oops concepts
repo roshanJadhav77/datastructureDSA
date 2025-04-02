@@ -83,7 +83,7 @@ use inheritance when sub class should be specialized version of the parent class
 composition
 composition is design principle where one class contains references to other classes(rather than inheriting from them)
 It is "has-a" relationship meaning class has a component(or several components) rather than being a type of another class.
-use the composition when the class has components that represents the part of its functionality, but it doesn't need to be type of those components
+use the composition when the class has components that represents the part of its functionality, but it doesn't need to be type of those components(e.g car has engine and  wheel)
 
 
 7. Polymorphism
