@@ -2,6 +2,7 @@ package com.datastructure.datastructureDSA.java.strings;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class RemoveDuplicateCharacter {
     public static void main(String[] args) {
@@ -16,7 +17,12 @@ public class RemoveDuplicateCharacter {
         System.out.println(hm);
 
         for(Character entry : hm.keySet()){
-            System.out.print(entry);
+            System.out.println(entry);
+        }
+
+        for( Map.Entry<Character, Integer> entry :hm.entrySet()){
+            System.out.println("key :" + entry.getKey() + " value :" + entry.getValue());
+
         }
     }
 }
