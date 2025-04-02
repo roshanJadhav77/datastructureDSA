@@ -78,6 +78,13 @@ inheritance
 inheritance is a mechanism where one class inherit the property and behavior of from another class.
 the sub class can also override the method of superclass to provide it's won implementation.
 it is an "is-a" relationship, meaning child class is type of parent class.
+use inheritance when sub class should be specialized version of the parent class(e.g Dog inherits from animal)
+
+composition
+composition is design principle where one class contains references to other classes(rather than inheriting from them)
+It is "has-a" relationship meaning class has a component(or several components) rather than being a type of another class.
+use the composition when the class has components that represents the part of its functionality, but it doesn't need to be type of those components
+
 
 7. Polymorphism
 having multiple forms
