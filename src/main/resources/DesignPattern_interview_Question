@@ -5,6 +5,7 @@ SOLID is a set of five principles for designing maintainable and scalable softwa
 
 S: Single Responsibility Principle
     Every class should have only one responsibility.
+    Class should have only one reason to change
     Example: In a payment module, I separated payment processing logic into a PaymentProcessor class and transaction logging into a TransactionLogger class.
 
 O: Open-Closed Principle
@@ -13,6 +14,7 @@ O: Open-Closed Principle
 
 L: Liskov Substitution Principle
     Subtypes should be substitutable for their base types.
+    if we have piece of code work with parent class it should work with any sub class of that parent class without requiring changes or unexpected behavior .
     Example: I ensured CreditCardPayment and DebitCardPayment both adhered to a Payment interface without breaking functionality.
 
 I: Interface Segregation Principle
@@ -21,6 +23,7 @@ I: Interface Segregation Principle
 
 D: Dependency Inversion Principle
     High-level modules should depend on abstractions, not concrete implementations.
+    High level modules should not depend on low leve modules. both should depend on Abstraction.
     Example: I used Spring Boot’s dependency injection to inject a NotificationService rather than instantiating it directly.
 
 

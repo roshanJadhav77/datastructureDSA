@@ -1,0 +1,123 @@
+1. OOPS
+Procedural programming focuses on writing procedures and functions that operate on data, while object oriented programming centers on crearting objects that encapsulate both data nad methods.
+
+2. why oops?
+Improves code organisation, code reusability, Scalability, Real word modeling, flexibility and extensibility, encapsulation.
+
+3.Main features of oops
+Encapsulation
+Abstraction
+Inheritance
+Polymorphism
+classes and Objects
+
+4. encapsulation
+Encapsulation means binding data and methods into single unit and restrict the outside access.
+
+5. Abstraction
+abstraction involves showing only important features of an object and hiding the complex details.
+abstraction can be achieved by Abstract class and Interfaces
+
+abstract class:
+it serves as blueprint for other classes.
+An abstract class is an class that cannot be instantiated by it's won and it supposed to be subclassed.
+abstract class can contain both abstract methods which are declared without implementation and concrete methods which are fully implemented.
+abstract class is defined using abstract key word.
+when an abstract class implements the interface it is not required to implement all interface methods, subclass of the abstract class will implement those methods.
+clas can inherit from abstract class and implement interfaces, abstract classes are used to achieve a form of multiple inheritance.
+abstract methods in abstract class can have access modifiers like public, protected or default(package private).
+abstract class can have final methods which cannot be overridden by subclass. this ensures certain methods remains unchanged across all the sub classes.
+
+Interface:
+it is like blue print that defines what methods class must have without specifying how they work.
+subclasses have to implement all the methods defined in interface.
+all interface methods are public by default and must be implemented as public in classes that implements the interface.
+interface supports multiple inheritance, class can implement more than one interface.
+all method in interface are abstract (until they are static or default methods)
+any variable declared in interface are implicitly public static and final.
+
+a. default methods
+default methods in interface have a body and provides default implementation. classes can override them if required.
+
+b. Static Methods
+Static methods in interface have a body and can be called without an instance of interface. They cannot be overridden by implementing classes.
+
+Q. Is it possible for a single class to implement two different interfaces ?
+yes, a single class can implement multiple interfaces.
+when class implements more than one interface it must provide implementation for all the abstract methods declared in those interface.
+
+Handling method conflicts
+if the interfaces being implemented have methods with the same signature the class only needs to provide one implementation of that method
+
+Using interface with default methods
+if a class implements two interface with the same default method, the class must override the method to resolve the conflict (explicitly choosing which default method need to be invoked)
+
+Q. Why default methods are allowed in interfaces ?
+before java 8 interfaces could only have abstract methods.
+the implementation of these methods have to be provided in separate concrete classes.
+if new methods was added to interface it's implementation has to be provided in every class that implements the interface.
+to overcome these issues java 8 introduced default methods.
+default methods allows interfaces to have methods with the implementation. this can be done with without affecting the classes that implements the interface.
+
+6. Inheritance
+Inheritance allows one class to inherit fields and methods from another class
+
+Types of inheritance
+single inheritance - A subclass inherits from on superclass.
+Multiple Inheritance - A one sub class inherits from more than one super classes (not allowed in JAVA)
+Multilevel inheritance - A class is derived from class which is also derived from another class.
+Hierarchical Inheritance - multiple class inherits from single super class.
+Hybrid Inheritance - combination of two or more types of inheritance such as multiple and multilevel.
+
+subclass : the class that inherits from the superclass it can add new attributes and methods or override existing one from super class.
+Superclass : the class being inhered from. it provide attributes and methods that can be used by subclasses.
+super Keyword: Used in sub classes to refer to its immediate superclass. It can also call superclass methods and constructors.
+
+Q. Explain how 'inheritance' and 'composition' are different ?
+inheritance
+inheritance is a mechanism where one class inherit the property and behavior of from another class.
+the sub class can also override the method of superclass to provide it's won implementation.
+it is an "is-a" relationship, meaning child class is type of parent class.
+
+7. Polymorphism
+having multiple forms
+polymorphism allows methods to do different things based on object it is acting upon.
+two types of polymorphism
+compile time polymorphism - static polymorphism - method overloading
+run time polymorphism - dynamic polymorphism - method overriding
+
+a. method overloading
+it allows multiple methods to have same name with different parameters within the same class.
+compiler selects the method to execute based on the arguments number and type provided during method invocation.
+static binding: method that needs to be invoked is determined at compile time. it is faster than dynamic binding.also called early binding
+can be applied to static methods.
+
+b. Method overriding
+it allows a subclasses to provides specific implementation of a method already defined in its supper class.
+having same method name and same parameters.
+It allows sub classes to provide specific implementation of method that us already defined in super class.
+method overriding is only applicable in inheritance where sub class inherits methods from it's superclass.
+it is also call late binding
+cannot override static methods. if static method is redefined in the sub class it is called method hiding.
+
+8. classes and objects
+Classes are blue prints of creating objects, and objects are instances of classes that holds data and methods to manipulate that data.
+class: blueprint for creating an objects, defining initial states(variables) and behavior (methods).
+
+9. Method hiding
+method hiding occurs when a sub class defines a static method with same signature as a static method in it's super class
+the method in sub class hides the method in super class. which means if we call static method on sub class the subclass version will get execute not the super class version.
+it differs from method overriding because it involves instance method.
+
+10. variable hiding
+variable hiding occurs when a local variable or parameter in the method or constructor has same name as instance variable(also known as member variable) or a class variable(static variable)
+in such cases local variables or parameters hides the instance variables or class variables.
+variable hiding happens when variables declared in sub class has the same name as variable declared in the superclass causing the subclass variable to hide the parent class variable when accessed within subclass.
+
+
+
+
+
+
+
+
