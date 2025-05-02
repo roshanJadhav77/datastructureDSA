@@ -28,6 +28,10 @@ clas can inherit from abstract class and implement interfaces, abstract classes 
 abstract methods in abstract class can have access modifiers like public, protected or default(package private).
 abstract class can have final methods which cannot be overridden by subclass. this ensures certain methods remains unchanged across all the sub classes.
 
+Q. In which situation we use abstract class's concrete method ?
+used when we need to provide common functionality to subclasses while allowing customization to specific behaviour.sub classes can use the provided concrete method or can override abstract to define their own specific implementation.
+used to provide some helper methods but don't need to be override.
+
 Interface:
 it is like blue print that defines what methods class must have without specifying how they work.
 subclasses have to implement all the methods defined in interface.
@@ -58,6 +62,8 @@ the implementation of these methods have to be provided in separate concrete cla
 if new methods was added to interface it's implementation has to be provided in every class that implements the interface.
 to overcome these issues java 8 introduced default methods.
 default methods allows interfaces to have methods with the implementation. this can be done with without affecting the classes that implements the interface.
+code reuse without breaking existing implementation.
+
 
 6. Inheritance
 Inheritance allows one class to inherit fields and methods from another class
