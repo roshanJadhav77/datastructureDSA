@@ -1,0 +1,128 @@
+✅ 1. What is @Transactional in Spring?
+Answer:
+@Transactional is an annotation provided by Spring that manages database transactions declaratively.
+It ensures that a method runs within a transaction — commit if successful, rollback if there's a runtime exception.
+
+✅ 2. Can @Transactional be applied at the class level?
+Answer:
+Yes, if applied at the class level, all public methods of the class are transactional by default.
+
+✅ 3. What are different propagation types in @Transactional?
+Answer: transaction propagation defines how transactions behave when one transactional method calls another transactional
+        method. It's configured using the @Transactional annotation's propagation attribute.
+Some commonly used ones:
+
+    REQUIRED: Join existing or create new (default)
+    REQUIRES_NEW: Always create new transaction
+    NESTED: Create nested transaction
+    MANDATORY: Must run in existing transaction
+    NEVER: Must not run in a transaction
+    SUPPORTS: Run in a transaction if one exists
+    NOT_SUPPORTED: Suspend current transaction
+
+example:
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logTransaction(String message) {
+     transactionRepository.save(new TransactionLog(message));
+    }
+
+✅ 4. Can @Transactional work on private methods?
+Answer:
+    No. Spring uses proxies to implement @Transactional, and proxies only intercept public methods. So private/protected/internal
+    method transactions won't work.
+
+✅ 5. What is the default propagation and isolation level of @Transactional?
+Answer:
+
+    Propagation: REQUIRED
+    Isolation: DEFAULT (relies on the DB default, often READ_COMMITTED)
+
+✅ 6. How can you rollback a transaction manually in Spring?
+Answer:
+    Use TransactionAspectSupport:
+    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+✅ 7. How does @Transactional behave with exceptions?
+Answer:
+
+    Rolls back on RuntimeException or Error
+    Does not roll back on checked exceptions unless specified via rollbackFor
+
+✅ 8. What is the difference between @Transactional and database-level transactions?
+Answer:
+
+    @Transactional is application-level abstraction handled by Spring
+
+    Database transactions are managed by the database engine
+    Spring maps @Transactional calls to JDBC or JPA transaction boundaries
+
+🔁 Follow-up / Tricky:
+Q: What happens if a checked exception is thrown inside a @Transactional method?
+
+A: By default, Spring does not roll back on checked exceptions. It only rolls back on unchecked exceptions (RuntimeException and Error).
+    To rollback on checked exceptions, you must configure:
+    @Transactional(rollbackFor = Exception.class)
+
+🔁 Tricky:
+Q: What if a method within the class overrides the annotation with @Transactional(propagation = Propagation.NOT_SUPPORTED)?
+
+A: Method-level annotations override the class-level annotation.
+
+🔁 Tricky:
+Q: If REQUIRES_NEW is used inside a REQUIRED method, and the inner fails, does outer roll back?
+
+A: No. REQUIRES_NEW creates a new independent transaction. If it fails, the outer (REQUIRED) can still commit unless explicitly handled.
+
+🔁 Tricky:
+Q: What if I call a transactional method from another method in the same class?
+
+A: It won’t work — this is called self-invocation, and Spring proxy doesn’t intercept such calls. To fix it, move the transactional logic to another bean or access via application context.
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+Common Pitfalls of using @Transactional annotations.
+
+1. ⚠️ Placing @Transactional on Private or Static Methods (or constructors)
+Spring manages transactions via AOP proxies, which don’t intercept private or static methods.
+
+    @Transactional
+    private void internalMethod() { // ⚠️ NOT TRANSACTIONAL!
+     // Spring won't manage transactions here
+    }
+✔ Fix: Always use @Transactional on public methods.
+
+2. ⚠️ Nested Transactions Can Cause Unexpected Rollbacks
+By default, @Transactional rolls back the entire transaction if one operation fails.
+If you need partial rollbacks, use Propagation.REQUIRES_NEW.
+Example:
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logTransaction(String message) {
+     transactionRepository.save(new TransactionLog(message));
+    }
+✔ Ensures log entry is saved even if the main transaction fails.
+
+3. ⚠️ Not Configuring Rollback for Specific Exceptions
+By default, @Transactional only rolls back unchecked exceptions (RuntimeException), not checked exceptions.
+Example (Won’t Rollback):
+java
+    @Transactional
+    public void processOrder() throws Exception { // ⚠️ Checked Exception won't trigger rollback
+     throw new Exception("Processing failed!");
+    }
+✔ Fix: Explicitly specify rollback behavior.
+
+    @Transactional(rollbackFor = Exception.class)
+    public void processOrder() throws Exception {
+     throw new Exception("Processing failed!");
+    }
+
+4. ⚠️ Mixing @Transactional with Asynchronous (@Async) Methods
+If you use @Async, Spring executes the method in a separate thread, causing @Transactional to lose its context.
+Example:
+@Async
+@Transactional
+public void processData() {
+ // ⚠️ Transaction won’t apply correctly here
+}
+✔ Fix: Use @Transactional only in synchronous methods.
