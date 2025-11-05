@@ -25,7 +25,7 @@ D: Dependency Inversion Principle
     High-level modules should depend on abstractions, not concrete implementations.
     High level modules should not depend on low leve modules. both should depend on Abstraction.
     Example: I used Spring Boot’s dependency injection to inject a NotificationService rather than instantiating it directly.
-
+---------------------------------------------------------------------------------------------------------------------------
 
 1. What is a Singleton Pattern?
 Ans: 	The Singleton Pattern ensures that a class has only one instance and provides a global point of access to it.

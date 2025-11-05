@@ -1,52 +1,46 @@
-Q1. Why Java is not 100 % object oriented ?
+1. Why Java is not 100 % object oriented ?
 a. primitive data types
-Java includes primitive data types like int, double, boolean, short, float, long and char which are not object.
-in pure Object oriented language everything should be object including basic data types
+    Java includes primitive data types like int, double, boolean, short, float, long and char which are not object.
+    in pure Object oriented language everything should be object including basic data types
 
 b. Static members and Methods
-Java supports static members (variables and methods)that are associated with class rather than an instance of class.
-in a static OOP everything should be encapsulated within objects and there should be no concept of static members.
-
-c. Lack of multiple Inheritance
+    Java supports static members (variables and methods)that are associated with class rather than an instance of class.
+    in a static OOP everything should be encapsulated within objects and there should be no concept of static members.
 
 Q2. Why pointers are not used in Java ?
-memory safety - java manages memory automatically using garbage collection, avoiding issues like dangling pointer and memory leaks.
-platform Independence - java uses references instead of pointers to ensure code runs consistently across different hardware architectures.
-simplicity - java's design hides complexity  of direct memory management, making it easier to write and maintain the code.
-security - By avoiding pointers java prevents unauthorized access to memory locations enhancing the security.
+    memory safety - java manages memory automatically using garbage collection, avoiding issues like dangling pointer and memory leaks.
+    platform Independence - java uses references instead of pointers to ensure code runs consistently across different hardware architectures.
+    simplicity - java's design hides complexity  of direct memory management, making it easier to write and maintain the code.
+    security - By avoiding pointers java prevents unauthorized access to memory locations enhancing the security.
 
-Q. What is 'JIT' compiler in java ?
-JDK compilers java source code to byte code then byte code is converted to native machine  code which is understood by system.
-JRE converts byte code to machine code for this conversion interpreter and JIT compiler are required.
+Q3. What is 'JIT' compiler in java ?
+    JDK compilers java source code to byte code then byte code is converted to native machine  code which is understood by system.
+    JRE converts byte code to machine code for this conversion interpreter and JIT compiler are required.
 
-Interpreter
-interpreter interpret the code line by line and converts it into native machine code.
-performance issue with interpreter
-- Executing the same byte code repeatedly each time the program runs
-- interpreter perform redundant work in interpreting the same instructions over and over
-- interpreter typically lack the ability to store the result of previous execution.
-
-JIT compiler
-JIT compiler is a command of java runtime environment that improves the performance  of java application at runtime
-the JIT compiler translates frequently executed or "hot" part of the byte code into native machine code at runtime.
-after converting segment of bytecode to native machine code JIT compiler has the capability to store the resulting native code in cache.
-if program encounters the same segment during it's execution it can reuse the cached native code.
-
-JIT compiler is part of JVM that converts frequently used bytecode into fast native machine code while programming is running.
-JVM start by interpreting the code line by line
-if it finds some part of running many times (hotspot), it uses JIT to compile them into faster machine code.
-next time the code runs it uses the faster version.
+Q4. What is Interpreter:
+    interpreter interpret the code line by line and converts it into native machine code.
+    performance issue with interpreter
 
 Q4. What is Write Once Run Anywhere concept in Java ?
-java compiler converts source code to byte code, byte code  comprises instructions for the java virtual machine and is not bound to any specific hardware or OS.
-the compiler byte code is executable on any device  with compatible JVM .
+    java compiler converts source code to byte code, byte code  comprises instructions for the java virtual machine and is not bound to any specific hardware or OS.
+    the compiler byte code is executable on any device  with compatible JVM .
 
 Q5. What is 'marker interface' in java ?
-A marker interface is a interface that does  not declare any method.
-basically empty interface, it is also known as tag interface
-ex: Serializable, cloneable, Remote interface
+    A marker interface is a interface that does not declare any method.
+    basically empty interface, it is also known as tag interface
+    also called as Tag interface
+    ex:
+        Serializable, cloneable, Remote interface
+    Why Do We Need It?
+    Marker interfaces are used to give metadata or signals to the Java runtime or tools that a class has a special behavior or permission.
+
+    Real-Life Analogy
+    Imagine a movie set. Actors with a VIP badge get access to special areas. The badge doesn’t say anything — it just shows you’re VIP.
+    Similarly, a marker interface is like a VIP badge for Java classes — it doesn't do anything itself, but the system checks for it to make decisions.
+
 a. Serializable
-JDK uses this interface in such a way that, NotSerializableException is thrown if item to be serialized does not implement serializable interface.
+Serializable is a marker interface in java.io package — it marks a class as serializable, meaning its objects can be converted to a byte stream (to save to a file, send over a network, etc.).
+
 
 b. Cloneable
 JDK uses this interface in such a way that, CloneNotSupportedException is thrown if item to be cloned does not implement cloneable interface.
@@ -56,14 +50,33 @@ marker interface indicates some special characteristics or features associated w
 we deign custom marker interface in java for specific application requirement.
 
 Q6. How to make class immutable in Java ?
-immutable class in java are those classes who's instances cannot be modified
-immutable classes in java are String and all wrapper classes.
+ans: Immutable class in java are those classes who's instances cannot be modified
+     example of immutable classes in java are "String" and all wrapper classes.
 
-To make class immutable
-. Make the class final
-. mark all the fields private and final
-. remove setter methods
-. make constructor initialize all fields
-. avoid returning mutable objects
+    To make class immutable
+    . Make the class final
+    . mark all the fields private and final
+    . remove setter methods
+    . make constructor initialize all fields
+    . avoid returning mutable objects
+
+    After java 16, java introduced "record" which make class immutable.
+
+Q7: What is record and how it works ?
+ans: A record in Java is a special type of class introduced in Java 14 (preview) and officially added in Java 16.
+     It is used to store immutable data — like a data carrier or DTO (Data Transfer Object) — without writing a lot of boilerplate code
+
+     or
+     A record is a compact way to create an immutable class with built-in equals(), hashCode(), and toString() methods.
+
+     Example:
+     public record Employee(String name, int age) { }
+
+     That’s it! 😄
+     Java automatically creates:
+     private final fields (name, age)
+     Constructor
+     Getters (name(), age())
+     equals(), hashCode(), and toString()
 
 

@@ -1,0 +1,178 @@
+Interview Questions (Virtusa – AI/Technical Round)
+🔹 Spring Framework & Spring Boot
+1. What is the difference between @Component, @Service, @Repository, and @Controller annotations in Spring?
+answer:
+    All are stereotype annotations used for Spring’s component scanning.
+
+    @Component: Generic stereotype for any Spring-managed bean.
+
+    @Service: Specialized version of @Component used for service layer.
+
+    @Repository: Specialized version for persistence layer. Adds DB exception translation.
+
+    @Controller: Specialized for web layer, used with Spring MVC.
+
+
+2. What is the difference between @RequestParam and @PathVariable in Spring Boot? Provide an example.
+answer:
+    @RequestParam: Extracts values from query parameters.
+    @PathVariable: Extracts values from URI path segments.
+    example:
+    @GetMapping("/search")
+    public String search(@RequestParam String name) { ... }
+    GET /search?name=roshan
+
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable Long id) { ... }
+     GET /users/42
+
+
+3. How do you implement custom authentication in a Spring application using Spring Security?
+answer:
+    Steps:
+    1. Create a custom UserDetailsService.
+    2. Implement UserDetails for user object.
+    3. Configure custom authentication in SecurityConfig.
+
+    example:
+    @Service
+    public class CustomUserDetailsService implements UserDetailsService {
+        public UserDetails loadUserByUsername(String username) {
+            // Load from DB
+            return new User(username, password, roles);
+        }
+    }
+
+    @Configuration
+    public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(customUserDetailsService);
+        }
+    }
+
+4. How do you simplify database operations using Spring Data JPA compared to JDBC? Provide examples.
+answer:
+    JDBC: Manual SQL, connection handling.
+    Spring Data JPA: Auto query generation, abstraction over JPA.
+
+    | Feature                            | **JDBC** (Low-Level)                        | **Spring Data JPA** (High-Level)             |
+    | ---------------------------------- | ------------------------------------------- | -------------------------------------------- |
+    | Boilerplate Code                   | A lot (connections, statements, exceptions) | Minimal, mostly interfaces                   |
+    | Query Writing                      | Manual SQL writing required                 | Auto-generated queries based on method names |
+    | Transaction Management             | Manual or programmatic                      | Declarative with `@Transactional`            |
+    | Result Mapping                     | Manual mapping from `ResultSet`             | Auto-mapped to entities using annotations    |
+    | Paging/Sorting                     | Manual SQL logic                            | Built-in with `PagingAndSortingRepository`   |
+    | Code Readability & Maintainability | Complex and verbose code                    | Clean and declarative                        |
+
+
+5. How do you diagnose and resolve the N+1 query problem in Hibernate?
+answer:
+    1. Use @EntityGraph
+    2. Use fetch = FetchType.EAGER (carefully)
+    3. Use JOIN FETCH in JPQL
+    Example:
+    java
+    Copy
+    Edit
+
+
+🔹 REST API Design
+1. What is the key principle you follow when designing a RESTful API?
+answer:
+    1. Use Nouns in URLs (Resource-Oriented)
+        ✅ Good: GET /orders/123
+        ❌ Bad: GET /getOrderDetails?id=123
+        This makes APIs predictable and aligns with REST semantics.
+    2. Use HTTP Methods Properly
+    3. Status Codes Must Reflect Response
+        ✅ 200 OK, 201 Created, 204 No Content
+        ❌ Avoid always returning 200 with error in body
+        Used @ControllerAdvice for global exception handling
+        example:
+        @ExceptionHandler(EntityNotFoundException.class)
+        public ResponseEntity<String> handleNotFound() {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found");
+        }
+    4. Pagination & Filtering
+        ✅ GET /products?page=1&size=10&category=electronics
+        Implemented with Pageable in Spring Boot:
+        public Page<Product> getProducts(Pageable pageable) { ... }
+    5. Use DTOs Instead of Entities
+    6. Version Your APIs
+
+
+2. What are some REST API best practices you have implemented in your projects?
+answer:
+    1. Use nouns for resources (/users, not /getUsers)
+    2. Use versioning (/api/v1/)
+    3. Use standard HTTP status codes
+    4. Secure with OAuth2/JWT
+    5. Pagination for large results
+
+3. How would you design an API that supports both synchronous and asynchronous operations?
+answer:
+    Support both immediate (sync) responses and background (async) processing with proper feedback and error tracking.
+    Design Approach
+    1. Define Clear Endpoints
+        ✅ Synchronous: POST /api/orders
+            Response: 201 Created with order details
+            Use when the operation is fast (e.g., < 2 sec)
+        ✅ Asynchronous: POST /api/orders/async
+            Response: 202 Accepted
+            Return a tracking ID or job status URL
+            example: {
+                       "jobId": "12345",
+                       "statusUrl": "/api/orders/status/12345"
+                     }
+    2. Use Background Processing for Async
+        Queue the request using: Kafka, RabbitMQ, SQS (message broker)
+    3. Error Handling Strategy
+        Use standard HTTP status codes:
+        202 Accepted: Async request received
+        400 Bad Request: Input error
+        500 Internal Server Error: Processing failed
+        504 Gateway Timeout: If sync call exceeds time limit
+        For async: store error in DB/logs and expose via status endpoint
+    4. Timeout Strategy for Sync
+        If operation takes > threshold (e.g., 3s), switch to async mode or return 202 with retry-after link
+    5. Scalability Considerations
+        Async workers can be scaled horizontally to process jobs in parallel
+        Use backpressure and retry strategies (like dead-letter queues for failed jobs)
+
+    Diff
+    | Aspect           | Sync                      | Async                                      |
+    | ---------------- | ------------------------- | ------------------------------------------ |
+    | Response Time    | Immediate (<2s)           | Background (delayed)                       |
+    | HTTP Status      | `200/201 OK`              | `202 Accepted`                             |
+    | Result Delivery  | In response               | Status endpoint or webhook                 |
+    | Failure Handling | Try/catch, error response | Retry, dead-letter queue, job status DB    |
+    | Scalability      | Limited by thread count   | Highly scalable with async queue & workers |
+
+
+4. What are the best practices for error handling, scalability, and communication in async APIs?
+answer:
+
+🔹 Kafka & Microservices
+1. How do you containerize a Spring Boot application using Docker? What steps and considerations are involved?
+answer:
+    1. Build Your Spring Boot JAR: ./mvnw clean package --> This creates a target/myapp.jar
+    2. Create a Dockerfile in Project Root
+    3. Build the Docker Image: docker build -t my-spring-boot-app .--> This creates a local image called my-spring-boot-app.
+    4. Run the Docker Container: docker run -p 8080:8080 my-spring-boot-app
+
+    | Step              | Command / File                                     |
+    | ----------------- | -------------------------------------------------- |
+    | Build JAR         | `./mvnw clean package`                             |
+    | Create Dockerfile | Use `FROM openjdk`, `COPY`, `EXPOSE`, `ENTRYPOINT` |
+    | Build Image       | `docker build -t my-spring-boot-app .`             |
+    | Run Container     | `docker run -p 8080:8080 my-spring-boot-app`       |
+
+
+2. Can you explain the core components of Kafka architecture and how they interact?
+
+How would you handle a situation where a critical microservice fails intermittently under high load?
+
+
+

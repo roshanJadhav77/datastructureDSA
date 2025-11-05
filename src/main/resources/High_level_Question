@@ -1,0 +1,38 @@
+🔹 Spring Security & API Troubleshooting
+
+1. Have you used Spring Security?
+ans:
+    “Yes, I’ve worked with Spring Security mainly for authentication and authorization in microservices. I’ve implemented
+    JWT-based authentication for stateless APIs, role-based access control, and also integrated with OAuth2 for third-party login.
+    I also used method-level security (@PreAuthorize) for fine-grained access in payment services.”
+
+2. What kind of issues have you faced while using Spring Security?
+anw:
+    “Common issues I faced were:
+    - Endpoint path mismatch between API Gateway and Spring Security config.
+    - JWT missing roles/scopes required by @PreAuthorize.
+    - CORS blocking some frontend requests.
+    - Forgetting to whitelist /login or /actuator/health endpoints.
+    - I usually troubleshoot by enabling org.springframework.security=DEBUG logs, checking JWT claims, and verifying the security configuration.”
+
+3. If all required accesses are given but some APIs are still not accessible by clients — How would you troubleshoot this issue?
+   and What could be the possible reasons?
+anw:
+    “I troubleshoot in layers:
+    - Gateway routing – check if request reaches the right microservice.
+    - Spring Security config – verify antMatchers or authorizeHttpRequests paths.
+    - JWT claims – decode token to confirm roles/scopes are present.
+    - Method-level rules – check @PreAuthorize annotations.
+    - Logs – use Spring Security debug logs.
+
+    Possible reasons:
+    - Role mismatch in JWT.
+    - Missing endpoint mapping in SecurityConfig.
+    - Token expired/invalid.
+    - CORS restrictions.
+
+    Downstream service rejecting request.”
+
+🔹 Caching & JPA/Hibernate
+Q5. What kind of caching have you implemented when working with databases?
+ans:

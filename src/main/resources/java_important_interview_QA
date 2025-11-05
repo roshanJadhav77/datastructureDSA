@@ -2,7 +2,7 @@
 ### Java
 Asked question:
 
-1. what is Transient ?
+1. What is Transient ?
     The transient keyword in Java is used to indicate that a specific field of a class should not be serialized.
     Transient variables value will not be saved.
     Use: exclude sensitive data. like password.
@@ -17,13 +17,31 @@ Asked question:
     }
 
 2. What is serialization?
-    serialized when the object is converted to a byte stream.
+    Serializable is a marker interface in java.io package — it marks a class as serializable, meaning its objects can be
+    converted to a byte stream (to save to a file, send over a network, etc.).
+
+    Serialized when the object is converted to a byte stream.
 
     To serialize an object means to convert its state to a byte stream so that the byte stream can be reverted back
     into a copy of the object. A Java object is serializable if its class or any of its superclasses implements either
-    the java. io.
+    the java.io.
 
-3. what is Volatile?
+    Why do we need serialization?
+        In Java, objects only live in memory (RAM).
+        If you stop your program, objects are lost.
+
+        So if you want to:
+        Save an object’s state permanently (e.g., to a file or database)
+        Send an object over the network (e.g., to another microservice)
+        Cache an object
+        👉 You must serialize it first.
+
+Q: What is serialVersionUID, and when should you change it?
+A: SerialVersionUID is a unique identifier used during Java object serialization to verify that the sender and receiver of a serialized object have compatible versions of the class.
+   You should change or increment it (like from 1L to 2L) whenever the class structure changes — such as adding, removing, or renaming fields.
+   If the structure remains the same but logic changes, you should keep the same UID.
+
+3. What is Volatile?
     The volatile keyword in Java is used to mark a variable as being stored in the main memory, and to ensure that all
     threads see the same value for that variable.
 
@@ -193,6 +211,36 @@ Most asked tricky and counter / cross  question on Oops in java
     2. Make fields private and final.
     3. Provide no setters.
     4. Use defensive copies for mutable fields.
+
+Q6. How to make class immutable in Java ?
+ans: Immutable class in java are those classes who's instances cannot be modified
+     example of immutable classes in java are "String" and all wrapper classes.
+
+    To make class immutable
+    . Make the class final
+    . mark all the fields private and final
+    . remove setter methods
+    . make constructor initialize all fields
+    . avoid returning mutable objects
+
+    After java 16, java introduced "record" which make class immutable.
+
+Q7: What is record and how it works ?
+ans: A record in Java is a special type of class introduced in Java 14 (preview) and officially added in Java 16.
+     It is used to store immutable data — like a data carrier or DTO (Data Transfer Object) — without writing a lot of boilerplate code
+
+     or
+     A record is a compact way to create an immutable class with built-in equals(), hashCode(), and toString() methods.
+
+     Example:
+     public record Employee(String name, int age) { }
+
+     That’s it! 😄
+     Java automatically creates:
+     private final fields (name, age)
+     Constructor
+     Getters (name(), age())
+     equals(), hashCode(), and toString()
 
 10.1 Why is immutability important?
     Immutability ensures thread safety, simplifies caching, and avoids unintended side effects.

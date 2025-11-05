@@ -1,9 +1,7 @@
 package com.datastructure.datastructureDSA.trickyOutput;
 
 public class Program5 {
-    public static void main(String[] args) {
-
-    }
+    public static void main(String[] args) {}
 
     public static void main(String args) {
 

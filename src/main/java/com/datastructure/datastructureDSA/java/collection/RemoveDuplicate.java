@@ -4,26 +4,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RemoveDuplicate {
 
     public static void main(String[] argv) {
-        List<Integer> list1 = new ArrayList<Integer>();
-        list1.add(100);
-        list1.add(200);
-        list1.add(300);
-        list1.add(400);
-        list1.add(400);
-        list1.add(500);
-        list1.add(600);
-        list1.add(600);
-        list1.add(700);
-        list1.add(400);
-        list1.add(500);
 
-        list1.stream().forEach(System.out::println);
+        var list = List.of(100,200,300,300,400,500,500,600,600,700,800);
 
-        LinkedHashSet<Integer> set = new LinkedHashSet<Integer>(list1);
+        var set = new LinkedHashSet<>(list);
+
+        set.forEach(entry -> System.out.println("LinkedHashSet "+entry));
+
         List<Integer>list2 = new ArrayList<Integer>(set);
 
         System.out.println("List after removing duplicate elements:");
@@ -31,7 +23,4 @@ public class RemoveDuplicate {
             System.out.println(ob);
 
     }
-
-
-
 }
