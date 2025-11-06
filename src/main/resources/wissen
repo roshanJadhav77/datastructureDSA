@@ -1,0 +1,221 @@
+1. Difference Between Inheritance and Composition ?
+    Inheritance: “is-a” relationship (child class inherits from parent).
+    Composition: “has-a” relationship (one class contains another as a field).
+
+    example:
+    In our Payment Orchestration Layer,
+    we used composition — not inheritance — to keep the design modular.
+    This allowed us to switch between gateways (Tamara, PayPal, Card) without changing the main logic.
+
+2. Control-M / Spring Batch
+    Control-M is a job scheduler used to automate batch processes.
+
+    Spring Batch is used to process large volumes of data in steps — like reading from DB, transforming, and writing to another DB.
+    A lightweight framework for batch processing in Java.
+    Works in steps: Reader → Processor → Writer.
+    Handles large data volumes efficiently.
+
+    💼 Payment Example
+
+    We used Spring Batch + Control-M for daily transaction reconciliation:
+    Read orders from orders DB.
+    Read payments from payments DB.
+    Compare and write mismatched entries to a reconciliation table.
+    Control-M triggered the Spring Batch job every midnight.
+
+3. Multithreading in Your Project
+    Multithreading allows multiple tasks to run concurrently, improving performance.
+
+    💼 Payment Example
+    In our Refund Service, multiple refunds were processed in parallel to reduce latency:
+    ExecutorService executor = Executors.newFixedThreadPool(10);
+    for(Transaction txn : refundQueue) {
+        executor.submit(() -> refundProcessor.process(txn));
+    }
+    executor.shutdown();
+
+    This ensured multiple refund transactions (e.g., Tamara, Card, PayPal) were handled simultaneously, increasing throughput.
+
+4. Write a single Query in JDBC, which will involve 2 tables from 2 different DB.
+    By default, JDBC cannot directly join two tables from different database connections —
+    because each Connection object in JDBC is tied to a single database.
+
+    However, there are three valid ways to achieve this:
+    ✅ Option 1: Using Fully Qualified Table Names (If Both DBs Are on Same Server)
+    SELECT
+        o.order_id,
+        o.customer_id,
+        p.payment_status,
+        p.amount
+    FROM
+        orders_db.orders o
+    JOIN
+        payments_db.payments p
+    ON
+        o.order_id = p.order_id;
+
+    ✅ Option 2: Using a Single JDBC Connection (Cross-DB Access Allowed)
+    import java.sql.*;
+
+    public class CrossDBQueryExample {
+        public static void main(String[] args) throws Exception {
+            String url = "jdbc:mysql://localhost:3306/orders_db"; ///single connection
+            String user = "root";
+            String password = "password";
+
+            Connection con = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT o.order_id, o.customer_id, p.amount, p.payment_status " +
+                           "FROM orders_db.orders o " +
+                           "JOIN payments_db.payments p ON o.order_id = p.order_id";
+
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt("order_id") + " | " +
+                    rs.getString("customer_id") + " | " +
+                    rs.getDouble("amount") + " | " +
+                    rs.getString("payment_status")
+                );
+            }
+
+            con.close();
+        }
+    }
+
+    🧠 Explanation:
+
+    The connection is opened to one DB (orders_db),
+    but we reference the other (payments_db) using its fully qualified name.
+
+    Works fine in MySQL, SQL Server, or PostgreSQL.
+
+    ✅ Option 3: When DBs Are on Different Servers
+    If databases are on different servers, you can’t directly join them with SQL.
+
+    Instead, you can:
+    Fetch data from the first DB.
+    Fetch data from the second DB.
+    Combine (join) them in Java using a data structure like a Map or List.
+
+    answer in interview
+    In JDBC, we can’t directly join tables from two databases on different servers.
+    But if both databases are hosted on the same database instance (like MySQL),
+    we can use fully qualified table names in the SQL query.
+    Otherwise, we connect to each database separately, fetch data, and join the results in Java using collections or streams.
+
+    For example, in our payment reconciliation module,
+    we joined data from orders_db.orders and payments_db.transactions to match payment statuses with order IDs.
+
+
+6. what is use of partition in kafka, Implement Priority Partition in Kafka ?
+    Topic: A channel or stream where messages are published.
+    Partition: Splits topic data for parallel processing.
+    Consumer Group: Ensures load balancing — each consumer reads from unique partitions.
+    Kafka Balancing::
+        Balancing ensures each consumer in a group gets fair partition allocation.
+        When a new consumer joins/leaves, Kafka triggers rebalance.
+
+    Result: parallel processing + fault tolerance.
+
+7. Security Flow in Payment Project
+    Flow:
+    - Client sends request with JWT token.
+    - Gateway validates token.
+    - Request goes through Spring Security filters.
+    - Role-based access verified.
+    - Sensitive data masked in logs.
+
+    Example:
+    We encrypted payment payloads using AES, validated token via JWT,
+    and ensured only admin roles could trigger refunds.
+
+8. Observer Pattern
+    Used when one event should notify multiple subscribers.
+
+    Payment Example:
+    When payment is successful, notify:
+    OrderService (update status)
+    NotificationService (send SMS)
+    RewardService (add cashback)
+
+9. Spring Boot Bean Scope
+    | Scope     | Description                       |
+    | --------- | --------------------------------- |
+    | Singleton | One instance per Spring container |
+    | Prototype | New instance per request          |
+    | Request   | One per HTTP request              |
+    | Session   | One per HTTP session              |
+
+    Example:
+    PaymentGatewayClient → Singleton (shared config)
+    PaymentContext → Prototype (new per transaction)
+    If the ID is same in singleton, Spring returns the same instance every time.
+
+10. Frameworks Used
+    Spring Boot (REST APIs)
+    Spring Cloud (Config, Eureka, Feign, Sleuth)
+    Spring Batch (Reconciliation jobs)
+    Kafka (Async messaging)
+    MySQL/PostgresSQL (persistence )
+    Redis (Caching)
+
+11. Can you explain the internal working of ConcurrentHashMap in Java?
+    ⚙️ 1. Why ConcurrentHashMap?
+    Problem with HashMap:
+    Not thread-safe — multiple threads writing can cause data corruption or infinite loops.
+
+    Problem with Hashtable:
+    Thread-safe, but synchronizes the entire map — very slow.
+
+    ✅ Solution → ConcurrentHashMap
+    Introduced in Java 5, improved in Java 8.
+    Provides high concurrency + thread safety + performance.
+
+    🧠 2. How It Achieves Concurrency
+    ☑️ Java 7 (Old Design)
+    Internally divided map into Segments (like mini-HashTables).
+    Each segment had its own lock → multiple threads could update different segments simultaneously.
+    🧩 But — complex structure + memory overhead.
+
+    ☑️ Java 8 (Modern Design)
+    Segments removed → uses Node arrays, locks at bucket level, and CAS (Compare-And-Swap) operations.
+    ✅ Concurrency achieved without segmenting
+    ✅ Uses fine-grained synchronization only where needed
+        ConcurrentHashMap<K, V>
+           └── Node<K,V>[] table
+                 ├── Node0 → (key1, value1)
+                 ├── Node1 → (key2, value2)
+                 ├── Node2 → TreeBin (if too many collisions)
+                 └── ...
+        Each bucket (index) in the array holds:
+        A linked list of nodes (in case of hash collisions)
+        Or a tree (red-black tree) if the bucket gets too large (≥ 8 nodes)
+
+    ⚙️ 4. Put Operation (Step-by-Step)
+    Internal Steps:
+    lets insert --> map.put("TXN123", 500.0);
+    1. Compute hash:
+    2. Locate bucket:
+    3. If bucket empty → CAS (Compare-And-Swap):
+       Atomically inserts node using Unsafe.compareAndSwapObject().
+       If succeeds → no locking needed! ✅ (lock-free insert)
+    4. If bucket NOT empty:
+       Acquires lock only on that bucket’s first node (synchronized (f)).
+       Checks existing keys → replaces or appends.
+       If list grows too long → converts to TreeBin (Red-Black Tree).
+    5. Resize check: If load factor exceeded, table resizes dynamically — done in parallel (multiple threads help).
+
+    Steps:
+
+    Compute hash → find bucket.
+
+    Read first node → check key.
+
+    If found → return value.
+
+    If bucket has TreeBin → lookup using tree search.
+
+    🧠 No locking used (entirely lock-free read).

@@ -229,7 +229,7 @@ Q7: What is record and how it works ?
 ans: A record in Java is a special type of class introduced in Java 14 (preview) and officially added in Java 16.
      It is used to store immutable data — like a data carrier or DTO (Data Transfer Object) — without writing a lot of boilerplate code
 
-     or
+     or *******
      A record is a compact way to create an immutable class with built-in equals(), hashCode(), and toString() methods.
 
      Example:

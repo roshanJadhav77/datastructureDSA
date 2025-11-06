@@ -5,6 +5,6 @@ public class Test {
         char[] charArray = "RJtestPassword@123".toCharArray();
         UserCredential userCredential = new UserCredential(charArray);
 
-        System.out.println("Password "+userCredential);
+        System.out.println("Password : "+userCredential);
     }
 }
