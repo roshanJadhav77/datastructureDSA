@@ -7,20 +7,6 @@ b. Static members and Methods
     Java supports static members (variables and methods)that are associated with class rather than an instance of class.
     in a static OOP everything should be encapsulated within objects and there should be no concept of static members.
 
-Q2. Why pointers are not used in Java ?
-    memory safety - java manages memory automatically using garbage collection, avoiding issues like dangling pointer and memory leaks.
-    platform Independence - java uses references instead of pointers to ensure code runs consistently across different hardware architectures.
-    simplicity - java's design hides complexity  of direct memory management, making it easier to write and maintain the code.
-    security - By avoiding pointers java prevents unauthorized access to memory locations enhancing the security.
-
-Q3. What is 'JIT' compiler in java ?
-    JDK compilers java source code to byte code then byte code is converted to native machine  code which is understood by system.
-    JRE converts byte code to machine code for this conversion interpreter and JIT compiler are required.
-
-Q4. What is Interpreter:
-    interpreter interpret the code line by line and converts it into native machine code.
-    performance issue with interpreter
-
 Q4. What is Write Once Run Anywhere concept in Java ?
     java compiler converts source code to byte code, byte code  comprises instructions for the java virtual machine and is not bound to any specific hardware or OS.
     the compiler byte code is executable on any device  with compatible JVM .
@@ -28,9 +14,8 @@ Q4. What is Write Once Run Anywhere concept in Java ?
 Q5. What is 'marker interface' in java ?
     A marker interface is a interface that does not declare any method.
     basically empty interface, it is also known as tag interface
-    also called as Tag interface
     ex:
-        Serializable, cloneable, Remote interface
+        Serializable, Cloneable, Remote interface
     Why Do We Need It?
     Marker interfaces are used to give metadata or signals to the Java runtime or tools that a class has a special behavior or permission.
 
@@ -80,3 +65,45 @@ ans: A record in Java is a special type of class introduced in Java 14 (preview)
      equals(), hashCode(), and toString()
 
 
+Java 8::
+
+What is Default and Static Methods in Interfaces.?
+  Default Methods (Java 8+)
+    What they are: Methods in an interface with a body (implementation) marked with the default keyword.
+    Why they exist: To add new methods to existing interfaces without forcing all old classes to update, ensuring backward compatibility.
+    How they work: Implementing classes can use the provided default code, or they can override it with their own specific logic.
+    Example: A List interface adding a forEach(Consumer action) default method. Old ArrayLists automatically get it, but you can still override it if needed.
+
+   example:
+    interface MyInterface {
+        default void greet() { // Default implementation
+            System.out.println("Hello from default method!");
+        }
+    }
+
+    class MyClass implements MyInterface {
+        // Can use the default greet() or override it:
+        // @Override
+        // public void greet() { System.out.println("Hello from MyClass!"); }
+    }
+
+  Static Methods in Interfaces (Java 8+)
+    What they are: Utility methods associated with the interface itself, not any object.
+    Why they exist: For helper or factory methods related to the interface, like Collections.sort() (though usually in utility classes).
+    How they work: Called directly on the interface name (e.g., MyInterface.doSomething()), cannot be overridden.
+    Example: An Optional interface might have Optional.of(value) as a static factory method.
+
+    example:
+       interface MathUtils {
+           static int add(int a, int b) { // Static utility method
+               return a + b;
+           }
+       }
+
+       // Call:
+       // int sum = MathUtils.add(5, 3); // Works, no object needed
+
+  Key Differences
+  Calling: Default methods use an "object" (myObj.greet()); static methods use the interface name (MathUtils.add()).
+  Inheritance: Default methods can be overridden; static methods cannot.
+  Purpose: Default adds features to interfaces; static provides interface-level utilities.
