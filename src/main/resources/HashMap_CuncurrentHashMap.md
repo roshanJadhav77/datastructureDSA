@@ -1,4 +1,123 @@
 
+## ⭐ Contract between `equals()` and `hashCode()`
+
+### 🎤 Final Answer to Speak:
+
+> In Java, `equals()` and `hashCode()` must follow a strict contract to ensure correct behavior in hash-based collections like `HashMap` and `HashSet`.
+
+---
+
+## ✅ The Contract Rules
+
+### 1️⃣ **If two objects are equal according to `equals()`, they MUST have the same `hashCode()`**
+
+```java
+a.equals(b) == true  ⇒  a.hashCode() == b.hashCode()
+```
+
+✔ Mandatory rule
+✔ Required for correct HashMap / HashSet behavior
+
+---
+
+### 2️⃣ **If two objects have the same `hashCode()`, they are NOT required to be equal**
+
+```java
+a.hashCode() == b.hashCode()  ⇏  a.equals(b)
+```
+
+✔ Hash collisions are allowed
+✔ `equals()` resolves collisions
+
+---
+
+### 3️⃣ **If `equals()` is overridden, `hashCode()` MUST also be overridden**
+
+✔ Otherwise lookups fail
+✔ Duplicate keys appear in HashMap
+✔ Data integrity breaks
+
+---
+
+### 4️⃣ **`hashCode()` must be consistent**
+
+* Multiple calls should return the same value
+* As long as the object’s state used in `equals()` does not change
+
+---
+
+### 5️⃣ **Non-equal objects should ideally produce different hash codes**
+
+✔ Not mandatory
+✔ Improves performance
+✔ Reduces collisions
+
+---
+
+## 🚨 What Happens If Contract Is Broken?
+
+### Example Problem:
+
+```java
+class Employee {
+    int id;
+
+    @Override
+    public boolean equals(Object o) {
+        return this.id == ((Employee) o).id;
+    }
+}
+```
+
+❌ `hashCode()` not overridden
+
+### Result:
+
+* HashMap stores duplicates
+* `get()` fails
+* Performance issues
+
+---
+
+## 🧠 Why This Contract Exists
+
+* Hash-based collections first use `hashCode()` to find bucket
+* Then use `equals()` to find exact match
+* Both must agree to locate objects correctly
+
+---
+
+## 🎤 Perfect 20-second Interview Summary
+
+> If two objects are equal according to equals(), they must have the same hashCode.
+> Equal hashCodes don’t guarantee equality, but equality guarantees same hashCode.
+> That’s why whenever we override equals(), we must override hashCode() to maintain correctness in hash-based collections.
+
+---
+
+## ⭐ Bonus (if interviewer probes deeper)
+
+### Should hashCode use immutable fields?
+
+> Yes. Fields used in hashCode and equals should be immutable to avoid breaking map lookups.
+
+---
+
+### ✅ inshort 
+`equals()`–`hashCode()` Contract
+
+* **If `equals()` returns true, `hashCode()` must be the same.**
+* **Same `hashCode()` does NOT guarantee `equals()` is true.**
+* **Always override `hashCode()` when you override `equals()`.**
+* **`hashCode()` must be consistent** while the object state used in `equals()` doesn’t change.
+* **Use immutable fields** in both to avoid lookup issues.
+
+**One-liner:**
+
+> *Equal objects must have equal hash codes; otherwise hash-based collections break.*
+
+
+
 # 🚀 **How HashMap Works Internally (Java 8+)**
 
 ## 🎤 Final Answer to Speak (High-level)
